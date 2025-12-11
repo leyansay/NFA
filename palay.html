@@ -1,0 +1,116 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NFA Inventory System</title>
+    <link rel="stylesheet" href="css/palay.css" />
+</head>
+<body>
+    <header>
+        <img src="image/nfa.png" alt="NFA Logo" class="logo">
+    <div class="header-text">
+        <h1>NFA Rice Inventory</h1>
+        <p>National Food Authority • Inventory Monitoring</p>
+    </div>
+
+     <nav class="menu">
+        <a href="homepage.html">Home</a>
+        <div class="dropdown">
+        <button class="dropbtn">Inventory ▾</button>
+        <div class="dropdown-content">
+            <a href="inventory.html">Rice Inventory</a>
+            <a href="palay.html">Palay Inventory </a>
+        </div>
+    </div>
+        <a href="reports.html">Reports</a>
+          <button onclick="logout()">Logout</button>
+
+<script>
+function logout() {
+    // redirect to login page
+    window.location.href = "login.html";
+}
+</script>
+    </nav>
+
+    </header>
+ <section class="inventory-section">
+        <h2>Warehouse Palay Inventory</h2>
+
+         <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th>Rice Age (Months)</th>
+                    <th>GID1</th>
+                    <th>GID2</th>
+                    <th>GID COMPO</th>
+                    <th>LGU COMPO</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0 - 1.0</td>
+                    <td>622</td>
+                    <td>3,650</td>
+                    <td>1,650</td>
+                    <td>2,000</td>
+                    <td>3,000</td>
+                </tr>
+                <tr>
+                    <td>1.1 - 2.0</td>
+                    <td>186</td>
+                    <td>200</td>
+                    <td>25</td>
+                    <td>5000</td>
+                    <td>6000</td>
+                    
+                </tr>
+                <tr>
+                    <td>2.1 - 3.0</td>
+                    <td>678</td>
+                    <td>80</td>
+                    <td>30</td>
+                    <td>2400</td>
+                    <td>6890</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="inventory-table" style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>Rice Age (Months)</th>
+                    <th>No. of Bags</th>
+                    <th>Total Kg</th>
+                    <th>Wet Rice</th>
+                    <th>Dry Rice</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0 - 1.0</td>
+                    <td>150</td>
+                    <td>7500 kg</td>
+                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>1.1 - 2.0</td>
+                    <td>200</td>
+                    <td>5000 kg</td>
+                    <td><input type="checkbox"></td>
+                     <td><input type="checkbox"></td>
+                </tr>
+                <tr>
+                    <td>2.1 - 3.0</td>
+                    <td>80</td>
+                    <td>2400 kg</td>
+                    <td><input type="checkbox"></td>
+                     <td><input type="checkbox"></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    </body>

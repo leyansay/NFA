@@ -1,0 +1,83 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NFA Inventory System</title>
+    <link rel="stylesheet" href="css/reports.css" />
+</head>
+<body>
+    <header>
+        <img src="image/nfa.png" alt="NFA Logo" class="logo">
+    <div class="header-text">
+        <h1>NFA Rice Inventory</h1>
+        <p>National Food Authority • Inventory Monitoring</p>
+    </div>
+
+     <nav class="menu">
+        <a href="homepage.html">Home</a>
+        <div class="dropdown">
+        <button class="dropbtn">Inventory ▾</button>
+        <div class="dropdown-content">
+            <a href="inventory.html">Rice Inventory</a>
+            <a href="palay.html">Palay Inventory </a>
+        </div>
+    </div>
+        <a href="reports.html">Reports</a>
+           <button onclick="logout()">Logout</button>
+
+<script>
+function logout() {
+    // redirect to login page
+    window.location.href = "login.html";
+}
+</script>
+    </nav>
+
+    </header>
+ <section class="inventory-section">
+        <h2>NFA Rice Reports</h2>
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Transaction</th>
+                    <th colspan="2">Today</th>
+                    <th colspan="2">This Month</th>
+                    <th colspan="2">Cum Total</th>
+                    
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Procurement</td>
+                    <td>DDN</td>
+                    <td>DDO</td>
+                    <td>DDN</td>
+                    <td>DDDO</td>
+                    <td>DDN</td>
+                    <td>DDO</td>
+                </tr>
+                <tr>
+                    <td>02</td>
+                    <td>Regular-Milled Rice</td>
+                    <td>200</td>
+                    <td>25 kg</td>
+                    <td>5000 kg</td>
+                    <td>1 month</td>
+                    <td></td>
+                     
+                </tr>
+                <tr>
+                    <td>03</td>
+                    <td>Brown Rice</td>
+                    <td>80</td>
+                    <td>30 kg</td>
+                    <td>2400 kg</td>
+                    <td>4 months</td>
+                    <td></td>
+                     
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    </body>
