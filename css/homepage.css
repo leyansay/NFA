@@ -14,11 +14,7 @@ body{
   color:#0b1b2b;
 }
 
-/* FIXED LAYOUT */
-.app {
-  display: flex;
-  min-height: 100vh;
-}
+
 
 /* Sidebar - FIXED positioning */
 .sidebar {
@@ -207,4 +203,32 @@ td.right{text-align:right;font-weight:700;color:#0b1b2b}
   .cards {
     grid-template-columns: 1fr;
   }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.add-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.add-btn:hover {
+  background: #06408a;
+}
+.menu li.active {
+  background: #0b54b5;
+  color: white;
+  border-radius: 6px;
 }

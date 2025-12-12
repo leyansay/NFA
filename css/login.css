@@ -37,11 +37,11 @@ body::before {
 
 .login-box .logo {
     width: 80px;
-    margin-bottom: 20px;
 }
 
 .login-box h2 {
-    margin-bottom: 25px;
+    margin-bottom: 35px;
+    font-size: 16px;
     color: #102da1;
 }
 
@@ -77,6 +77,19 @@ body::before {
 .login-box button:hover {
     background: #1a5f7a;
 }
+
+        .error-message {
+            color: #e63946;
+            background: #ffe5e7;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
 
 .footer-text {
     margin-top: 15px;

@@ -13,7 +13,7 @@
 
     <main class="main">
       <div class="topbar">
-        <div style="display:flex;align-items:center;gap:12px;">
+        <div style="align-items:center;gap:12px;">
           <div style="font-size:22px;font-weight:800;color:var(--primary)">Dashboard</div>
           <div class="search">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#8a9fb7" stroke-width="2" stroke-linecap="round"/></svg>
@@ -108,6 +108,9 @@
       document.getElementById("sidebar").innerHTML = html;
 
       // Add event listeners AFTER sidebar is inserted
+      document.getElementById("goHome").addEventListener("click", () => {
+        window.location.href = "home.html";
+      });
       document.getElementById("goTrans").addEventListener("click", () => {
         window.location.href = "transaction.html";
       });

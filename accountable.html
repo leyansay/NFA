@@ -1,88 +1,128 @@
- <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFA Inventory System</title>
-    <link rel="stylesheet" href="css/reports.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NFA Rice Inventory — Accountable Officer</title>
+  <link rel="stylesheet" href="css/homepage.css" />
 </head>
+
 <body>
-    <header>
-        <img src="image/nfa.png" alt="NFA Logo" class="logo">
-    <div class="header-text">
-        <h1>NFA Rice Inventory</h1>
-        <p>National Food Authority • Inventory Monitoring</p>
-    </div>
+  <div class="app">
+    
+    <!-- SIDEBAR -->
+    <div id="sidebar"></div>
 
-     <nav class="menu">
-        <a href="homepage.html">Home</a>
-        <div class="dropdown">
-        <button class="dropbtn">Inventory ▾</button>
-        <div class="dropdown-content">
-            <a href="inventory.html">Rice Inventory</a>
-            <a href="palay.html">Palay Inventory </a>
-        </div>
-    </div>
-        <a href="reports.html">Reports</a>
-           <button onclick="logout()">Logout</button>
+    <!-- MAIN CONTENT -->
+    <main class="main">
 
-<script>
-function logout() {
-    // redirect to login page
-    window.location.href = "login.html";
-}
-</script>
-    </nav>
+      <section class="inventory-section">
 
-    </header>
- <section class="inventory-section">
-        <h2>Accountable Officer</h2>
+        <!-- Section Header -->
+      <div class="section-header">
+  <h2>Accountable Officer</h2>
+
+  <div class="button-group">
+    <button class="add-btn" onclick="window.location.href='add_accountable.html'">
+      + Add Accountable Officer
+    </button>
+
+    <button class="add-btn" onclick="window.location.href='add_masterfile.html'">
+      + Add Masterfile
+    </button>
+  </div>
+</div>
+
+
+        <!-- Table -->
         <table class="inventory-table">
-            <thead>
-                <tr>
-                    <th>Officer Id</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Warehouse Code</th>
-                    <th>Warehouse Name</th>
-                    <th colspan="2">Period of Accountability</th>
-                    
-                    
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Amoyan</td>
-                    <td>Mark Ray</td>
-                    <td>Magslay</td>
-                    <td>112311</td>
-                    <td>GID 1</td>
-                    <td>12-12-2025/02-24-2026</td>
-                    
-                    
-                </tr>
-                <tr>
-                    <td>02</td>
-                    <td>Regular-Milled Rice</td>
-                    <td>200</td>
-                    <td>25 kg</td>
-                    <td>5000 kg</td>
-                    <td>1 month</td>
-                   
-                     
-                </tr>
-                <tr>
-                    <td>03</td>
-                    <td>Brown Rice</td>
-                    <td>80</td>
-                    <td>30 kg</td>
-                    <td>2400 kg</td>
-                    <td>4 months</td>
-                    
-                     
-                </tr>
-            </tbody>
+          <thead>
+            <tr>
+              <th>Officer Id</th>
+              <th>Last Name</th>
+              <th>First Name</th>
+              <th>Middle Name</th>
+              <th>Warehouse Code</th>
+              <th>Warehouse Name</th>
+              <th>Period of Accountability</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Amoyan</td>
+              <td>Mark Ray</td>
+              <td>Magslay</td>
+              <td>112311</td>
+              <td>GID 1</td>
+              <td>12-12-2025 / 02-24-2026</td>
+            </tr>
+
+            <tr>
+              <td>02</td>
+              <td>Regular-Milled Rice</td>
+              <td>200</td>
+              <td>25 kg</td>
+              <td>5000 kg</td>
+              <td>1 month</td>
+              <td>-</td>
+            </tr>
+
+            <tr>
+              <td>03</td>
+              <td>Brown Rice</td>
+              <td>80</td>
+              <td>30 kg</td>
+              <td>2400 kg</td>
+              <td>4 months</td>
+              <td>-</td>
+            </tr>
+          </tbody>
         </table>
-    </section>
-    </body>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // small interactive behavior: dropdown hide
+    document.addEventListener('click', function(e){
+      document.querySelectorAll('.menu-drop').forEach(d => {
+        if(!d.contains(e.target) && !d.previousElementSibling?.contains(e.target)) 
+          d.style.display='none';
+      });
+    });
+
+    // Highlight cards
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        document.querySelectorAll('.card').forEach(c=>c.style.transform='none');
+        card.style.transform='translateY(-6px)';
+      });
+    });
+
+    // Load sidebar
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sidebar").innerHTML = html;
+
+        document.getElementById("goHome").addEventListener("click", () => {
+        window.location.href = "homepage.html";
+      });
+        document.getElementById("goTrans").addEventListener("click", () => {
+          window.location.href = "transaction.html";
+        });
+        document.getElementById("goAcc").addEventListener("click", () => {
+          window.location.href = "accountable.html";
+        });
+      });
+
+     rc="sidebar.js"
+
+  </script>
+
+</body>
+</html>
