@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Transaction Entry</title>
+    <link rel="stylesheet" href="transaction.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Data Entry of Stock Transaction File</h2>
+
+    <div class="two-col">
+        <div class="form-group">
+            <label>Accountable Officer</label>
+            <input type="text" value="937925 CARCOSIA SENENT">
+        </div>
+
+        <div class="form-group">
+            <label>Warehouse</label>
+            <input type="text" value="112302 GID2112302E">
+        </div>
+    </div>  
+
+    <div class="two-col">
+        <div class="form-group">
+            <label>Period of Accountability (From)</label>
+            <input type="date" value="2025-02-24">
+        </div>
+
+        <div class="form-group">
+            <label>To</label>
+            <input type="date" value="2027-02-23">
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <label>Document No.</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>Document Type</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>AI No.</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>Received From / Issued To</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>OR No.</label>
+        <input type="text">
+    </div>
+
+    <div class="two-col">
+        <div class="form-group">
+            <label>Transaction Date</label>
+            <input type="date">
+        </div>
+
+        <div class="form-group">
+            <label>Activity Code</label>
+            <input type="text">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Variety Code</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>Sack Code</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>Sack Condition</label>
+        <input type="text">
+    </div>
+
+    <div class="form-group">
+        <label>No. of Bags</label>
+        <input type="number">
+    </div>
+
+    <div class="form-group">
+        <label>Sack Weight</label>
+        <input type="number" step="0.001">
+    </div>
+
+    <div class="form-group">
+        <label>Gross Weight</label>
+        <input type="number" step="0.001">
+    </div>
+
+    <div class="form-group">
+        <label>% MC</label>
+        <input type="number" step="0.01">
+    </div>
+
+    <div class="form-group">
+        <label>Net Weight</label>
+        <input type="number" step="0.001">
+    </div>
+
+    <div class="button-row">
+        <button class="save">Save</button>
+        <button class="save-add">Save & Add Another</button>
+        <button class="cancel">Cancel</button>
+    </div>
+
+</div>
+
+<script>
+    document.querySelector(".save").addEventListener("click", () => {
+    alert("Form saved!");
+});
+
+document.querySelector(".save-add").addEventListener("click", () => {
+    alert("Form saved. You can now add another.");
+});
+
+document.querySelector(".cancel").addEventListener("click", () => {
+    alert("Action cancelled.");
+});
+
+</script>
+</body>
+</html>
