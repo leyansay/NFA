@@ -8,29 +8,8 @@
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar" aria-label="sidebar">
-      <div class="logo" style="display:flex; align-items:center; gap:10px;">
-        <!-- Image Logo -->
-        <div class="mark">
-          <img src="image/nfa.png" alt="NFA Logo" class="circle-img" />
-        </div>
-        <!-- Text Section -->
-        <div>
-          <div style="font-weight:800">NFA Rice Inventory</div>
-          <div style="font-size:12px; color:#6b7a86">
-            National Food Authority • Inventory Monitoring
-          </div>
-        </div>
-      </div>
-
-      <ul class="menu">
-        <li>🏠 Home</li>
-        <li class="Accountable" id="goAcc">🧑‍💼 Accountable Officer</li>
-        <li class="trans" id="goTrans">📤 Transaction</li>
-        <li>🗃️ Inventory</li>
-        <li>📈 Report</li>
-      </ul>
-    </aside>
+    <div id="sidebar"></div>
+</div>
 
     <main class="main">
       <div class="topbar">
@@ -107,28 +86,37 @@
   </div>
 
   <script>
-    // small interactive behavior: toggle quick dropdown in top (example)
-    document.addEventListener('click', function(e){
-      document.querySelectorAll('.menu-drop').forEach(d => {
-        if(!d.contains(e.target) && !d.previousElementSibling?.contains(e.target)) d.style.display='none';
+  // small interactive behavior: toggle quick dropdown in top (example)
+  document.addEventListener('click', function(e){
+    document.querySelectorAll('.menu-drop').forEach(d => {
+      if(!d.contains(e.target) && !d.previousElementSibling?.contains(e.target)) d.style.display='none';
+    });
+  });
+
+  // Highlight card on click
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      document.querySelectorAll('.card').forEach(c=>c.style.transform='none');
+      card.style.transform='translateY(-6px)';
+    });
+  });
+
+  // Load sidebar
+  fetch("sidebar.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("sidebar").innerHTML = html;
+
+      // Add event listeners AFTER sidebar is inserted
+      document.getElementById("goTrans").addEventListener("click", () => {
+        window.location.href = "transaction.html";
+      });
+      document.getElementById("goAcc").addEventListener("click", () => {
+        window.location.href = "accountable.html";
       });
     });
 
-    // Highlight card on click
-    document.querySelectorAll('.card').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        document.querySelectorAll('.card').forEach(c=>c.style.transform='none');
-        card.style.transform='translateY(-6px)';
-      });
-    });
-    
-    document.getElementById("goTrans").addEventListener("click", function () {
-    window.location.href = "transaction.html";
-});
-document.getElementById("goAcc").addEventListener("click", function () {
-    window.location.href = "accountable.html";
-});
+</script>
 
-  </script>
 </body>
 </html>
