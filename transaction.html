@@ -1,140 +1,337 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Transaction Entry</title>
-    <link rel="stylesheet" href="transaction.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NFA Rice Inventory — Transaction</title>
+<link rel="stylesheet" href="css/homepage.css">
+<style>
+/* Minimal styling for modals and grids (replace with your CSS) */
+.modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); }
+.modal-content { background:#fff; margin: 5% auto; padding:20px; width: 90%; max-width:800px; border-radius:10px; }
+.close { float:right; font-size:24px; cursor:pointer; }
+.grid { display:flex; gap:20px; margin-bottom:10px; }
+.grid > div { flex:1; display:flex; flex-direction:column; }
+.grid-3 { display:flex; gap:20px; margin-bottom:10px; }
+.grid-3 > div { flex:1; display:flex; flex-direction:column; }
+.inventory-table { width:100%; border-collapse:collapse; margin-top:10px; }
+.inventory-table th, .inventory-table td { border:1px solid #ccc; padding:5px; text-align:left; }
+.add-btn { padding:5px 10px; margin-bottom:10px; }
+</style>
 </head>
+
 <body>
+<div class="app">
 
-<div class="container">
-    <h2>Data Entry of Stock Transaction File</h2>
+  <!-- SIDEBAR -->
+  <div id="sidebar"></div>
 
-    <div class="two-col">
-        <div class="form-group">
-            <label>Accountable Officer</label>
-            <input type="text" value="937925 CARCOSIA SENENT">
+  <!-- ACCOUNTABLE OFFICER MODAL -->
+  <div id="officerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeOfficer">&times;</span>
+      <h2>Select Accountable Officer</h2>
+
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Officer ID</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Warehouse Code</th>
+            <th>Warehouse Name</th>
+            <th>Period</th>
+            <th>Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Amoyan</td>
+            <td>Mark Ray</td>
+            <td>Magslay</td>
+            <td>112311</td>
+            <td>GID 1</td>
+            <td>2025-12-12 / 2026-02-24</td>
+            <td><button class="selectOfficer">Select</button></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Reyes</td>
+            <td>Anna</td>
+            <td>Marie</td>
+            <td>112312</td>
+            <td>GID 2</td>
+            <td>2025-11-01 / 2026-01-31</td>
+            <td><button class="selectOfficer">Select</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TRANSACTION MODAL -->
+  <div id="transactionModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeTransaction">&times;</span>
+      <h2>Add Transaction</h2>
+
+      <form id="transactionForm">
+
+        <h3>Accountability Information</h3>
+
+        <!-- ACCOUNTABLE OFFICER -->
+        <div class="grid">
+          <div>
+            <label>Accountable Officer ID</label>
+            <input type="text" id="officerId" readonly>
+          </div>
+          <div>
+            <label>Accountable Officer Name</label>
+            <input type="text" id="officerName" readonly>
+          </div>
         </div>
 
-        <div class="form-group">
-            <label>Warehouse</label>
-            <input type="text" value="112302 GID2112302E">
+        <!-- WAREHOUSE -->
+        <div class="grid">
+          <div>
+            <label>Warehouse ID</label>
+            <input type="text" id="warehouseId" readonly>
+          </div>
+          <div>
+            <label>Warehouse Name</label>
+            <input type="text" id="warehouseName" readonly>
+          </div>
         </div>
-    </div>  
 
-    <div class="two-col">
-        <div class="form-group">
-            <label>Period of Accountability (From)</label>
-            <input type="date" value="2025-02-24">
+        <!-- PERIOD -->
+        <div class="grid">
+          <div>
+            <label>Period From</label>
+            <input type="date" id="periodFrom" readonly>
+          </div>
+          <div>
+            <label>Period To</label>
+            <input type="date" id="periodTo" readonly>
+          </div>
         </div>
 
-        <div class="form-group">
-            <label>To</label>
-            <input type="date" value="2027-02-23">
+        <hr>
+
+        <h3>Transaction Details</h3>
+
+        <!-- DOC NO + CANCELLED -->
+        <div class="grid">
+          <div>
+            <label>Document No.</label>
+            <input type="text">
+          </div>
+          <div class="checkbox-align">
+            <label>
+              <input type="checkbox"> Cancelled
+            </label>
+          </div>
         </div>
-    </div>
 
-    <hr>
+        <!-- DOC TYPE + OR NO -->
+        <div class="grid">
+          <div>
+            <label>Document Type</label>
+            <select>
+              <option value="">Select</option>
+              <option>RIS</option>
+              <option>DR</option>
+              <option>WSI</option>
+              <option>Invoice</option>
+            </select>
+          </div>
+          <div>
+            <label>OR No.</label>
+            <input type="text">
+          </div>
+        </div>
 
-    <div class="form-group">
-        <label>Document No.</label>
-        <input type="text">
-    </div>
+        <!-- AI NO + REF WSI -->
+        <div class="grid">
+          <div>
+            <label>AI No.</label>
+            <input type="text">
+          </div>
+          <div>
+            <label>Ref. WSI No.</label>
+            <input type="text">
+          </div>
+        </div>
 
-    <div class="form-group">
-        <label>Document Type</label>
-        <input type="text">
-    </div>
-
-    <div class="form-group">
-        <label>AI No.</label>
-        <input type="text">
-    </div>
-
-    <div class="form-group">
-        <label>Received From / Issued To</label>
-        <input type="text">
-    </div>
-
-    <div class="form-group">
-        <label>OR No.</label>
-        <input type="text">
-    </div>
-
-    <div class="two-col">
-        <div class="form-group">
+        <!-- RECD / ISSD + DATE -->
+        <div class="grid">
+          <div>
+            <label>Recd From / Issd To</label>
+            <input type="text">
+          </div>
+          <div>
             <label>Transaction Date</label>
             <input type="date">
+          </div>
         </div>
 
-        <div class="form-group">
+        <!-- ACTIVITY + VARIETY -->
+        <div class="grid">
+          <div>
             <label>Activity Code</label>
             <input type="text">
+          </div>
+          <div>
+            <label>Variety Code</label>
+            <input type="text">
+          </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Variety Code</label>
-        <input type="text">
-    </div>
+        <!-- SACK CODE + CONDITION + SACK WEIGHT -->
+        <div class="grid-3">
+          <div>
+            <label>Sack Code</label>
+            <input type="text">
+          </div>
+          <div>
+            <label>Sack Condition</label>
+            <select>
+              <option value="">Select</option>
+              <option>Good</option>
+              <option>Damaged</option>
+            </select>
+          </div>
+          <div>
+            <label>Sack Weight</label>
+            <input type="number" id="sackWeight">
+          </div>
+        </div>
 
-    <div class="form-group">
-        <label>Sack Code</label>
-        <input type="text">
-    </div>
+        <!-- AGE + PILE NO -->
+        <div class="grid-3">
+          <div>
+            <label>Age</label>
+            <input type="number">
+          </div>
+          <div>
+            <label>Pile No.</label>
+            <input type="number">
+          </div>
+        </div>
 
-    <div class="form-group">
-        <label>Sack Condition</label>
-        <input type="text">
-    </div>
+        <!-- BAGS + GROSS + MC -->
+        <div class="grid-3">
+          <div>
+            <label>No. of Bags</label>
+            <input type="number">
+          </div>
+          <div>
+            <label>Gross Weight</label>
+            <input type="number" id="grossWeight">
+          </div>
+          <div>
+            <label>% MC</label>
+            <input type="number">
+          </div>
+        </div>
 
-    <div class="form-group">
-        <label>No. of Bags</label>
-        <input type="number">
-    </div>
+        <!-- NET WEIGHT -->
+        <div class="grid">
+          <div>
+            <label>Net Weight</label>
+            <input type="number" id="netWeight" readonly>
+          </div>
+        </div>
 
-    <div class="form-group">
-        <label>Sack Weight</label>
-        <input type="number" step="0.001">
+        <button type="submit">Save Transaction</button>
+      </form>
     </div>
+  </div>
 
-    <div class="form-group">
-        <label>Gross Weight</label>
-        <input type="number" step="0.001">
-    </div>
-
-    <div class="form-group">
-        <label>% MC</label>
-        <input type="number" step="0.01">
-    </div>
-
-    <div class="form-group">
-        <label>Net Weight</label>
-        <input type="number" step="0.001">
-    </div>
-
-    <div class="button-row">
-        <button class="save">Save</button>
-        <button class="save-add">Save & Add Another</button>
-        <button class="cancel">Cancel</button>
-    </div>
+  <!-- MAIN -->
+  <main class="main">
+    <section class="inventory-section">
+      <div class="section-header">
+        <h2>Transaction</h2>
+        <button class="add-btn" id="addTransaction">+ Add Transaction</button>
+      </div>
+    </section>
+  </main>
 
 </div>
 
 <script>
-    document.querySelector(".save").addEventListener("click", () => {
-    alert("Form saved!");
+/* LOAD SIDEBAR */
+fetch("sidebar.html")
+  .then(r => r.text())
+  .then(html => {
+    sidebar.innerHTML = html;
+    goHome.onclick = () => location.href="homepage.html";
+    goAcc.onclick = () => location.href="accountable.html";
+    goTrans.onclick = () => location.href="transaction.html";
+  });
+
+const officerModal = document.getElementById("officerModal");
+const transactionModal = document.getElementById("transactionModal");
+
+/* STEP 1: OPEN OFFICER TABLE */
+document.getElementById("addTransaction").onclick = () => {
+  officerModal.style.display = "block";
+};
+
+/* CLOSE MODALS */
+document.getElementById("closeOfficer").onclick = () => officerModal.style.display = "none";
+document.getElementById("closeTransaction").onclick = () => transactionModal.style.display = "none";
+
+/* STEP 2: SELECT OFFICER */
+document.querySelectorAll(".selectOfficer").forEach(btn => {
+  btn.addEventListener("click", function () {
+    const row = this.closest("tr");
+
+    // Set Officer info
+    document.getElementById("officerId").value = row.children[0].textContent;
+    document.getElementById("officerName").value =
+      row.children[1].textContent + ", " + row.children[2].textContent + " " + row.children[3].textContent;
+
+    // Set Warehouse info
+    document.getElementById("warehouseId").value = row.children[4].textContent;
+    document.getElementById("warehouseName").value = row.children[5].textContent;
+
+    // Set Period
+    const period = row.children[6].textContent.split(" / ");
+    document.getElementById("periodFrom").value = period[0];
+    document.getElementById("periodTo").value = period[1];
+
+    // Close Officer modal and open Transaction modal
+    officerModal.style.display = "none";
+    transactionModal.style.display = "block";
+  });
 });
 
-document.querySelector(".save-add").addEventListener("click", () => {
-    alert("Form saved. You can now add another.");
-});
+/* SAVE TRANSACTION */
+document.getElementById("transactionForm").onsubmit = e => {
+  e.preventDefault();
+  alert("Transaction saved.");
+  transactionModal.style.display = "none";
+  e.target.reset();
+};
 
-document.querySelector(".cancel").addEventListener("click", () => {
-    alert("Action cancelled.");
-});
+/* NET WEIGHT COMPUTATION */
+const gross = document.getElementById("grossWeight");
+const sack = document.getElementById("sackWeight");
+const net = document.getElementById("netWeight");
+
+function computeNetWeight() {
+  const g = parseFloat(gross.value) || 0;
+  const s = parseFloat(sack.value) || 0;
+  net.value = g - s;
+}
+
+gross.addEventListener("input", computeNetWeight);
+sack.addEventListener("input", computeNetWeight);
 
 </script>
+
 </body>
 </html>
