@@ -164,16 +164,16 @@ document.getElementById("accountableForm").addEventListener("submit", (e) => {
     firstName: document.getElementById("firstName").value,
     lastName: document.getElementById("lastName").value,
     middleName: document.getElementById("middleName").value,
-    warehouse: document.getElementById("warehouseCode")?.value || "",
-    warehouseName: document.getElementById("warehouseName")?.value || "",
+    warehouse: "",
+    warehouseName: "",
     fromDate: "",
     toDate: "",
     statusExam: "",
-    note: document.getElementById("note")?.value || "", // FIXED: Now gets note value
+    note: "",
     createdAt: new Date().toISOString()
   };
 
-  console.log("Saving data:", formData);
+  console.log("Saving accountable officer data:", formData);
 
   // Save to Realtime Database
   const newOfficerRef = database.ref('accountableOfficers').push();
@@ -181,7 +181,7 @@ document.getElementById("accountableForm").addEventListener("submit", (e) => {
   newOfficerRef.set(formData)
     .then(() => {
       console.log("Officer added successfully to Firebase!");
-      alert("Officer added successfully!");
+      alert("Officer added successfully! Now add their warehouse details in the Masterfile.");
       const accountableModal = document.getElementById("accountableModal");
       accountableModal.style.display = "none";
       e.target.reset();
@@ -196,25 +196,33 @@ document.getElementById("accountableForm").addEventListener("submit", (e) => {
 // ----- Handle Masterfile form submission -----
 document.getElementById("masterfileForm").addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log("Masterfile data submitted");
+  console.log("Masterfile form submitted");
 
   if (!currentOfficerDocId) {
     alert("No officer selected. Please try again.");
     return;
   }
 
-  // Get form values
+  // FIXED: Get the correct field IDs from your HTML
+  const warehouseCode = document.getElementById("warehouse").value;
+  const warehouseName = document.getElementById("warehouse_name").value; // FIXED: underscore not camelCase
+  const fromDate = document.getElementById("fromDate").value;
+  const toDate = document.getElementById("toDate").value;
+  const statusExam = document.getElementById("statusExam").value;
+  const note = document.getElementById("note").value;
+
   const masterfileData = {
-    warehouse: document.getElementById("warehouse").value,
-    warehouseName: document.getElementById("warehouseName")?.value || "", // FIXED: Added warehouseName
-    fromDate: document.getElementById("fromDate").value,
-    toDate: document.getElementById("toDate").value,
-    statusExam: document.getElementById("statusExam").value,
-    note: document.getElementById("note")?.value || "", // FIXED: Changed to getElementById
+    warehouse: warehouseCode,
+    warehouseName: warehouseName, // FIXED: Now properly gets the warehouse name
+    fromDate: fromDate,
+    toDate: toDate,
+    statusExam: statusExam,
+    note: note,
     updatedAt: new Date().toISOString()
   };
 
-  console.log("Updating officer with masterfile data:", masterfileData);
+  console.log("Saving masterfile data:", masterfileData);
+  console.log("Warehouse Name value:", warehouseName);
 
   // Update the officer record with masterfile data
   database.ref('accountableOfficers/' + currentOfficerDocId).update(masterfileData)
@@ -267,7 +275,6 @@ function attachDropdownListeners() {
             if (officerMasterField) {
               officerMasterField.value = data.officerId || "";
               officerMasterField.setAttribute("readonly", true);
-              console.log("Set officerMaster to:", data.officerId);
             }
             
             // Pre-fill the Officer Name (Full Name: Last, First Middle)
@@ -279,23 +286,26 @@ function attachDropdownListeners() {
               const fullName = `${lastName}, ${firstName} ${middleName}`.trim();
               officerNameField.value = fullName;
               officerNameField.setAttribute("readonly", true);
-              console.log("Set officerName to:", fullName);
             }
             
-            // Pre-fill other masterfile data
+            // Pre-fill warehouse code
             document.getElementById("warehouse").value = data.warehouse || "";
             
-            // Pre-fill warehouse name if field exists
-            const warehouseNameField = document.getElementById("warehouseName");
+            // FIXED: Pre-fill warehouse name using correct ID (warehouse_name with underscore)
+            const warehouseNameField = document.getElementById("warehouse_name");
             if (warehouseNameField) {
               warehouseNameField.value = data.warehouseName || "";
+              console.log("Pre-filled warehouse name:", data.warehouseName);
             }
             
+            // Pre-fill dates
             document.getElementById("fromDate").value = data.fromDate || "";
             document.getElementById("toDate").value = data.toDate || "";
+            
+            // Pre-fill status
             document.getElementById("statusExam").value = data.statusExam || "";
             
-            // Find the note input
+            // Pre-fill note
             const noteInput = document.getElementById("note");
             if (noteInput) {
               noteInput.value = data.note || "";
