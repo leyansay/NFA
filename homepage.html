@@ -13,13 +13,17 @@
 
     <main class="main">
       <div class="topbar">
-        <div style="align-items:center;gap:12px;">
-          <div style="font-size:22px;font-weight:800;color:var(--primary)">Dashboard</div>
-          <div class="search">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.35-4.35" stroke="#8a9fb7" stroke-width="2" stroke-linecap="round"/></svg>
-            <input placeholder="Search item, warehouse or report..." aria-label="search">
-          </div>
-        </div>
+            <div class="topbar">
+      <h2 class="page-title">DASHBOARD</h2>
+
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M21 21l-4.35-4.35" stroke="#8a9fb7" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input placeholder="Search item, warehouse or report..." aria-label="search">
+      </div>
+    </div>
+
 
         <div class="user">
           <div style="text-align:right">
@@ -85,41 +89,7 @@
     </main>
   </div>
 
-  <script>
-  // small interactive behavior: toggle quick dropdown in top (example)
-  document.addEventListener('click', function(e){
-    document.querySelectorAll('.menu-drop').forEach(d => {
-      if(!d.contains(e.target) && !d.previousElementSibling?.contains(e.target)) d.style.display='none';
-    });
-  });
-
-  // Highlight card on click
-  document.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('click', ()=>{
-      document.querySelectorAll('.card').forEach(c=>c.style.transform='none');
-      card.style.transform='translateY(-6px)';
-    });
-  });
-
-  // Load sidebar
-  fetch("sidebar.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("sidebar").innerHTML = html;
-
-      // Add event listeners AFTER sidebar is inserted
-      document.getElementById("goHome").addEventListener("click", () => {
-        window.location.href = "home.html";
-      });
-      document.getElementById("goTrans").addEventListener("click", () => {
-        window.location.href = "transaction.html";
-      });
-      document.getElementById("goAcc").addEventListener("click", () => {
-        window.location.href = "accountable.html";
-      });
-    });
-
-</script>
+  <script src="jscript/home.js"></script>
 
 </body>
 </html>
