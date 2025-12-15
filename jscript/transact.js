@@ -101,6 +101,11 @@ document.getElementById("addTransaction").onclick = () => {
   officerModal.style.display = "block";
 };
 
+/* PREVIEW BUTTON - Opens new window with print preview */
+document.getElementById("previewTransaction").onclick = () => {
+  window.open("preview.html", "_blank");
+};
+
 /* CLOSE MODALS */
 document.getElementById("closeOfficer").onclick = () => officerModal.style.display = "none";
 document.getElementById("closeTransaction").onclick = () => transactionModal.style.display = "none";

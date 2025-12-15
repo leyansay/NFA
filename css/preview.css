@@ -1,0 +1,170 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
+
+  .no-print {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .no-print button {
+    padding: 12px 24px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+
+  .print-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .print-btn:hover {
+    background-color: #45a049;
+  }
+
+  .back-btn {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .back-btn:hover {
+    background-color: #da190b;
+  }
+
+  .print-container {
+    background: white;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+
+  .report-header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 20px;
+  }
+
+  .report-header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #333;
+  }
+
+  .report-header h2 {
+    font-size: 18px;
+    color: #666;
+    font-weight: normal;
+  }
+
+  .report-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 12px;
+  }
+
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 10px;
+  }
+
+  .report-table th,
+  .report-table td {
+    border: 1px solid #333;
+    padding: 6px 4px;
+    text-align: left;
+  }
+
+  .report-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .report-table td {
+    vertical-align: top;
+  }
+
+  .report-footer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+  }
+
+  .signature-section {
+    text-align: center;
+    width: 30%;
+  }
+
+  .signature-line {
+    border-top: 1px solid #333;
+    margin-top: 50px;
+    padding-top: 5px;
+  }
+
+  .header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nfa-logo {
+  width: 80px;
+  height: auto;
+}
+
+.header-text {
+  text-align: center;
+}
+
+
+  @media print {
+    body {
+      background: white;
+      padding: 0;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+
+      .nfa-logo {
+    width: 60px;
+  }
+
+    .print-container {
+      box-shadow: none;
+      padding: 20px;
+      max-width: 100%;
+    }
+
+    @page {
+      size: letter landscape;
+      margin: 0.5in;
+    }
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+    color: #666;
+  }
