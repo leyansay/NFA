@@ -1,109 +1,63 @@
- <!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFA Inventory System</title>
-    <link rel="stylesheet" href="css/inventory.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NFA Rice Inventory — Inventory</title>
+<link rel="stylesheet" href="css/inventory.css">
+<link rel="stylesheet" href="css/sidebar.css">
 </head>
+
 <body>
-    <div class="app">
-    <div id="sidebar"></div>
-</div>
-    
-    <header>
-        <img src="image/nfa.png" alt="NFA Logo" class="logo">
-    <div class="header-text">
-        <h1>NFA Rice Inventory</h1>
-        <p>National Food Authority • Inventory Monitoring</p>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <div id="sidebar"></div>
+
+  <main class="main">
+
+    <!-- SECTION HEADER WITH BUTTONS -->
+    <div class="section-header">
+      <h2>Inventory Items</h2>
+      <div class="button-group">
+        <button class="add-btn active-btn" id="btnRice">Rice</button>
+        <button class="add-btn" id="btnPalay">Palay</button>
+      </div>
     </div>
 
-     <nav class="menu">
-        <a href="homepage.html">Home</a>
-        <div class="dropdown">
-        <button class="dropbtn">Inventory ▾</button>
-        <div class="dropdown-content">
-            <a href="inventory.html">Rice Inventory</a>
-            <a href="palay.html">Palay Inventory </a>
+    <!-- PANEL CONTAINER -->
+    <div class="panel">
+      <!-- PANEL HEADER: SEARCH -->
+      <div class="panel-header">
+        <div class="search">
+          <span class="search-icon">🔍︎</span>
+          <input type="text" id="searchInput" placeholder="Search inventory..." />
         </div>
-    </div>
-        <a href="reports.html">Reports</a>
-           <button onclick="logout()">Logout</button>
+      </div>
 
-<script>
-function logout() {
-    // redirect to login page
-    window.location.href = "login.html";
-}
-</script>
-    </nav>
-
-    </header>
-
-     <section class="inventory-section">
-
-        <h2>Rice Inventory</h2>
-
-<a href="rice.html" class="warehouse-btn">Warehouse</a>
-
-        <table class="inventory-table" style="margin-top:20px ;">
-            <thead>
-                <tr>
-                    <TH>Warehse.</TH>
-                    <th>Pile No.</th>
-                    <th>Rice Age (Months)</th>
-                    <th>No. of Bags</th>
-                    <th>Total Kg</th>
-                    <th>Wet Rice</th>
-                    <th>Dry Rice</th>
-                    <TH></TH>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>GID1</td>
-                    <td>1A</td>
-                    <td>0 - 1.0</td>
-                    <td>150</td>
-                    <td>7500 kg</td>
-                    <td><input type="checkbox"></td>
-                    <td><input type="checkbox"></td>
-                   <td class="icon-column">
-                  <img src="image/edit.png" alt="Edit Icon" class="icon">
-                  <img src="image/delete.png" alt="Delete Icon" class="icon">
-</td>
-
-                </tr>
-                <tr>
-                    <td>GID2</td>
-                    <td>1AB</td>
-                    <td>1.1 - 2.0</td>
-                    <td>200</td>
-                    <td>5000 kg</td>
-                    <td><input type="checkbox"></td>
-                     <td><input type="checkbox"></td>
-                     <td class="icon-column">
-                      <img src="image/edit.png" alt="Edit Icon" class="icon">
-                  <img src="image/delete.png" alt="Delete Icon" class="icon">
-                     </td>
-                </tr>
-                <tr>
-                    <td>COMPO</td>
-                    <TD>2A</TD>
-                    <td>2.1 - 3.0</td>
-                    <td>80</td>
-                    <td>2400 kg</td>
-                    <td><input type="checkbox"></td>
-                     <td><input type="checkbox"></td>
-                     <td class="icon-column">
-                      <img src="image/edit.png" alt="Edit Icon" class="icon">
-                  <img src="image/delete.png" alt="Delete Icon" class="icon">
-                     </td>
-                </tr>
-
-            </tbody>
+      <!-- INVENTORY TABLE -->
+      <section class="inventory-section" id="inventoryContent">
+        <table class="inventory-table">
+          <thead>
+            <tr>
+              <th>Item Code</th>
+              <th>Variety</th>
+              <th>Warehouse</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>R-001</td><td>IR64</td><td>GID 1</td><td>5000</td></tr>
+            <tr><td>R-002</td><td>PSB Rc18</td><td>GID 2</td><td>3200</td></tr>
+          </tbody>
         </table>
-    </section>
+      </section>
+    </div>
 
- 
-    </body>
+  </main>
+</div>
+
+<script src="jscript/inventory.js"></script>
+<script src="jscript/sidebar.js"></script>
+</body>
+</html>
