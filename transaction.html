@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/accountable.css">
 <link rel="stylesheet" href="css/transaction.css">
-
 </head>
 
 <body>
@@ -102,11 +101,11 @@
         <div class="grid">
           <div>
             <label>Document No.</label>
-            <input type="text">
+            <input type="text" id="documentNo">
           </div>
           <div class="checkbox-align">
             <label>
-              <input type="checkbox"> Cancelled
+              <input type="checkbox" id="cancelled"> Cancelled
             </label>
           </div>
         </div>
@@ -115,7 +114,7 @@
         <div class="grid">
           <div>
             <label>Document Type</label>
-            <select>
+            <select id="documentType">
               <option value="">Select</option>
               <option>RIS</option>
               <option>DR</option>
@@ -125,7 +124,7 @@
           </div>
           <div>
             <label>OR No.</label>
-            <input type="text">
+            <input type="text" id="orNo">
           </div>
         </div>
 
@@ -133,11 +132,11 @@
         <div class="grid">
           <div>
             <label>AI No.</label>
-            <input type="text">
+            <input type="text" id="aiNo">
           </div>
           <div>
             <label>Ref. WSI No.</label>
-            <input type="text">
+            <input type="text" id="refWSINo">
           </div>
         </div>
 
@@ -145,11 +144,11 @@
         <div class="grid">
           <div>
             <label>Recd From / Issd To</label>
-            <input type="text">
+            <input type="text" id="recdFromIssdTo">
           </div>
           <div>
             <label>Transaction Date</label>
-            <input type="date">
+            <input type="date" id="transactionDate">
           </div>
         </div>
 
@@ -157,11 +156,11 @@
         <div class="grid">
           <div>
             <label>Activity Code</label>
-            <input type="text">
+            <input type="text" id="activityCode">
           </div>
           <div>
             <label>Variety Code</label>
-            <input type="text">
+            <input type="text" id="varietyCode">
           </div>
         </div>
 
@@ -169,11 +168,11 @@
         <div class="grid-3">
           <div>
             <label>Sack Code</label>
-            <input type="text">
+            <input type="text" id="sackCode">
           </div>
           <div>
             <label>Sack Condition</label>
-            <select>
+            <select id="sackCondition">
               <option value="">Select</option>
               <option>Good</option>
               <option>Damaged</option>
@@ -189,11 +188,11 @@
         <div class="grid-3">
           <div>
             <label>Age</label>
-            <input type="number">
+            <input type="number" id="age">
           </div>
           <div>
             <label>Pile No.</label>
-            <input type="number">
+            <input type="number" id="pileNo">
           </div>
         </div>
 
@@ -201,7 +200,7 @@
         <div class="grid-3">
           <div>
             <label>No. of Bags</label>
-            <input type="number">
+            <input type="number" id="numberOfBags">
           </div>
           <div>
             <label>Gross Weight</label>
@@ -209,7 +208,7 @@
           </div>
           <div>
             <label>% MC</label>
-            <input type="number">
+            <input type="number" id="moistureContent">
           </div>
         </div>
 
@@ -232,10 +231,20 @@
       <div class="section-header">
         <h2>Transaction</h2>
         <div>
-          <button class="add-btn" id="previewTransaction" style="margin-right: 10px; background-color: #2196F3;">📄 Preview</button>
+          <button class="add-btn" id="previewTransaction" style="margin-right: 10px; background-color: #2196F3;">👁 Preview</button>
           <button class="add-btn" id="addTransaction">+ Add Transaction</button>
         </div>
       </div>
+
+      <!-- SORT DROPDOWN -->
+      <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
+        <label for="sortSelect" style="font-weight: 500; color: #5a5a5a; font-size: 14px;">Sort by:</label>
+        <select id="sortSelect" class="sort-select">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+      </div>
+
 <div>
   <div class="table-wrapper">
       <table class="inventory-table">
@@ -248,7 +257,7 @@
               <th>Period From</th>
               <th>Period To</th>
               <th>Document No.</th>
-              <th>Cancelled</th>
+              <th>Document Type</th>
               <th>OR No.</th>
               <th>AI No.</th>
               <th>Ref. WSI No.</th>
@@ -265,6 +274,8 @@
               <th>Gross Weight</th>
               <th>%MC</th>
               <th>Net Weight</th>
+              <th>Cancelled</th>
+              <th>Actions</th>
 
             </tr>
           </thead>

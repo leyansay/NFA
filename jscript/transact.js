@@ -19,6 +19,10 @@ const database = firebase.database();
 // Test connection
 console.log("Firebase initialized:", firebase.apps.length > 0);
 
+// Global variable to store transactions for sorting
+let allTransactions = [];
+let currentSortOrder = 'newest'; // default sort order
+
 /* LOAD SIDEBAR */
 fetch("sidebar.html")
   .then(r => r.text())
@@ -144,14 +148,10 @@ document.getElementById("transactionForm").onsubmit = e => {
   // Get form reference
   const form = e.target;
   
-  // Get all form inputs in order
-  const textInputs = form.querySelectorAll('input[type="text"]');
-  const numberInputs = form.querySelectorAll('input[type="number"]');
-  const selects = form.querySelectorAll('select');
-  const checkbox = form.querySelector('input[type="checkbox"]');
-  const dateInput = form.querySelector('input[type="date"]');
+  // Check if we're editing (has data-edit-id attribute)
+  const editId = form.getAttribute('data-edit-id');
   
-  // Collect all transaction data
+  // Collect all transaction data - FIXED: Added IDs to all inputs
   const transactionData = {
     // Accountability Information
     officerId: document.getElementById("officerId").value,
@@ -162,59 +162,91 @@ document.getElementById("transactionForm").onsubmit = e => {
     periodTo: document.getElementById("periodTo").value,
     
     // Transaction Details
-    documentNo: textInputs[0].value || "",
-    cancelled: checkbox.checked,
-    documentType: selects[0].value || "",
-    orNo: textInputs[1].value || "",
-    aiNo: textInputs[2].value || "",
-    refWSINo: textInputs[3].value || "",
-    recdFromIssdTo: textInputs[4].value || "",
-    transactionDate: dateInput.value || "",
-    activityCode: textInputs[5].value || "",
-    varietyCode: textInputs[6].value || "",
-    sackCode: textInputs[7].value || "",
-    sackCondition: selects[1].value || "",
+    documentNo: document.getElementById("documentNo").value || "",
+    documentType: document.getElementById("documentType").value || "",
+    orNo: document.getElementById("orNo").value || "",
+    aiNo: document.getElementById("aiNo").value || "",
+    refWSINo: document.getElementById("refWSINo").value || "",
+    recdFromIssdTo: document.getElementById("recdFromIssdTo").value || "",
+    transactionDate: document.getElementById("transactionDate").value || "",
+    activityCode: document.getElementById("activityCode").value || "",
+    varietyCode: document.getElementById("varietyCode").value || "",
+    sackCode: document.getElementById("sackCode").value || "",
+    sackCondition: document.getElementById("sackCondition").value || "",
     sackWeight: parseFloat(document.getElementById("sackWeight").value) || 0,
-    age: parseFloat(numberInputs[1].value) || 0,
-    pileNo: parseFloat(numberInputs[2].value) || 0,
-    numberOfBags: parseFloat(numberInputs[3].value) || 0,
+    age: parseFloat(document.getElementById("age").value) || 0,
+    pileNo: parseFloat(document.getElementById("pileNo").value) || 0,
+    numberOfBags: parseFloat(document.getElementById("numberOfBags").value) || 0,
     grossWeight: parseFloat(document.getElementById("grossWeight").value) || 0,
-    moistureContent: parseFloat(numberInputs[5].value) || 0,
+    moistureContent: parseFloat(document.getElementById("moistureContent").value) || 0,
     netWeight: parseFloat(document.getElementById("netWeight").value) || 0,
+    cancelled: document.getElementById("cancelled").checked,
     
     // Metadata
-    createdAt: new Date().toISOString(),
     timestamp: Date.now()
   };
   
-  console.log("Saving transaction:", transactionData);
-  
-  // Save to Firebase
-  const transactionsRef = database.ref('transactions');
-  const newTransactionRef = transactionsRef.push();
-  
-  newTransactionRef.set(transactionData)
-    .then(() => {
-      console.log("Transaction saved successfully!");
-      alert("Transaction saved successfully!");
-      transactionModal.style.display = "none";
-      form.reset();
-      
-      // Clear readonly fields
-      document.getElementById("officerId").value = "";
-      document.getElementById("officerName").value = "";
-      document.getElementById("warehouseId").value = "";
-      document.getElementById("warehouseName").value = "";
-      document.getElementById("periodFrom").value = "";
-      document.getElementById("periodTo").value = "";
-      document.getElementById("netWeight").value = "";
-      document.getElementById("sackWeight").value = "";
-      document.getElementById("grossWeight").value = "";
-    })
-    .catch((error) => {
-      console.error("Error saving transaction:", error);
-      alert("Error saving transaction: " + error.message);
-    });
+  if (editId) {
+    // UPDATE existing transaction
+    transactionData.updatedAt = new Date().toISOString();
+    const transactionRef = database.ref('transactions/' + editId);
+    
+    console.log("Updating transaction:", editId, transactionData);
+    
+    transactionRef.update(transactionData)
+      .then(() => {
+        console.log("Transaction updated successfully!");
+        alert("Transaction updated successfully!");
+        transactionModal.style.display = "none";
+        form.reset();
+        form.removeAttribute('data-edit-id');
+        
+        // Clear readonly fields
+        document.getElementById("officerId").value = "";
+        document.getElementById("officerName").value = "";
+        document.getElementById("warehouseId").value = "";
+        document.getElementById("warehouseName").value = "";
+        document.getElementById("periodFrom").value = "";
+        document.getElementById("periodTo").value = "";
+        document.getElementById("netWeight").value = "";
+        document.getElementById("sackWeight").value = "";
+        document.getElementById("grossWeight").value = "";
+      })
+      .catch((error) => {
+        console.error("Error updating transaction:", error);
+        alert("Error updating transaction: " + error.message);
+      });
+  } else {
+    // CREATE new transaction
+    transactionData.createdAt = new Date().toISOString();
+    const transactionsRef = database.ref('transactions');
+    const newTransactionRef = transactionsRef.push();
+    
+    console.log("Saving transaction:", transactionData);
+    
+    newTransactionRef.set(transactionData)
+      .then(() => {
+        console.log("Transaction saved successfully!");
+        alert("Transaction saved successfully!");
+        transactionModal.style.display = "none";
+        form.reset();
+        
+        // Clear readonly fields
+        document.getElementById("officerId").value = "";
+        document.getElementById("officerName").value = "";
+        document.getElementById("warehouseId").value = "";
+        document.getElementById("warehouseName").value = "";
+        document.getElementById("periodFrom").value = "";
+        document.getElementById("periodTo").value = "";
+        document.getElementById("netWeight").value = "";
+        document.getElementById("sackWeight").value = "";
+        document.getElementById("grossWeight").value = "";
+      })
+      .catch((error) => {
+        console.error("Error saving transaction:", error);
+        alert("Error saving transaction: " + error.message);
+      });
+  }
 };
 
 /* NET WEIGHT COMPUTATION */
@@ -236,6 +268,96 @@ window.addEventListener('DOMContentLoaded', () => {
   console.log("Transaction page loaded");
 });
 
+/* SORT TRANSACTIONS */
+function sortTransactions(order) {
+  currentSortOrder = order;
+  
+  // Sort the array
+  allTransactions.sort((a, b) => {
+    const dateA = new Date(a.data.transactionDate || '1900-01-01');
+    const dateB = new Date(b.data.transactionDate || '1900-01-01');
+    
+    if (order === 'newest') {
+      return dateB - dateA; // Newest first
+    } else {
+      return dateA - dateB; // Oldest first
+    }
+  });
+  
+  // Re-render the table
+  renderTransactions();
+}
+
+/* RENDER TRANSACTIONS TO TABLE */
+function renderTransactions() {
+  const tbody = document.getElementById("inventoryBody");
+  tbody.innerHTML = "";
+  
+  if (allTransactions.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="26" style="text-align:center;">No transactions found</td>
+      </tr>`;
+    return;
+  }
+  
+  allTransactions.forEach(item => {
+    const data = item.data;
+    const docId = item.docId;
+    
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${data.officerId || "-"}</td>
+      <td>${data.officerName || "-"}</td>
+      <td>${data.warehouseId || "-"}</td>
+      <td>${data.warehouseName || "-"}</td>
+      <td>${data.periodFrom || "-"}</td>
+      <td>${data.periodTo || "-"}</td>
+
+      <td>${data.documentNo || "-"}</td>
+      <td>${data.documentType || "-"}</td>
+      <td>${data.orNo || "-"}</td>
+
+      <td>${data.aiNo || "-"}</td>
+      <td>${data.refWSINo || "-"}</td>
+      <td>${data.recdFromIssdTo || "-"}</td>
+
+      <td>${data.transactionDate || "-"}</td>
+      <td>${data.activityCode || "-"}</td>
+      <td>${data.varietyCode || "-"}</td>
+
+      <td>${data.sackCode || "-"}</td>
+      <td>${data.sackCondition || "-"}</td>
+      <td>${data.sackWeight || 0}</td>
+
+      <td>${data.age || 0}</td>
+      <td>${data.pileNo || 0}</td>
+      <td>${data.numberOfBags || 0}</td>
+
+      <td>${data.grossWeight || 0}</td>
+      <td>${data.moistureContent || 0}</td>
+      <td>${data.netWeight || 0}</td>
+
+      <td>${data.cancelled ? "Yes" : "No"}</td>
+      
+      <td class="action-cell">
+        <div class="dropdown">
+          <span class="dot-menu">&#8942;</span>
+          <div class="dropdown-content">
+            <button class="edit-btn" data-doc-id="${docId}">Edit</button>
+            <button class="delete-btn" data-doc-id="${docId}">Delete</button>
+          </div>
+        </div>
+      </td>
+    `;
+    
+    tbody.appendChild(tr);
+  });
+  
+  // Attach event listeners to action buttons
+  attachActionListeners();
+}
+
 /* LOAD TRANSACTIONS FROM FIREBASE */
 function loadTransactions() {
   const tbody = document.getElementById("inventoryBody");
@@ -250,59 +372,32 @@ function loadTransactions() {
   console.log("Loading transactions...");
 
   transactionsRef.on("value", (snapshot) => {
-    tbody.innerHTML = "";
+    allTransactions = []; // Clear the array
 
     if (!snapshot.exists()) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="24" style="text-align:center;">No transactions found</td>
-        </tr>`;
+      renderTransactions();
       return;
     }
 
-    let transactionCount = 0;
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
-      transactionCount++;
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${data.officerId || "-"}</td>
-        <td>${data.officerName || "-"}</td>
-        <td>${data.warehouseId || "-"}</td>
-        <td>${data.warehouseName || "-"}</td>
-        <td>${data.periodFrom || "-"}</td>
-        <td>${data.periodTo || "-"}</td>
-        <td>${data.documentNo || "-"}</td>
-        <td>${data.cancelled ? "Yes" : "No"}</td>
-        <td>${data.documentType || "-"}</td>
-        <td>${data.orNo || "-"}</td>
-        <td>${data.aiNo || "-"}</td>
-        <td>${data.refWSINo || "-"}</td>
-        <td>${data.recdFromIssdTo || "-"}</td>
-        <td>${data.transactionDate || "-"}</td>
-        <td>${data.activityCode || "-"}</td>
-        <td>${data.varietyCode || "-"}</td>
-        <td>${data.sackCode || "-"}</td>
-        <td>${data.sackCondition || "-"}</td>
-        <td>${data.sackWeight || 0}</td>
-        <td>${data.age || 0}</td>
-        <td>${data.pileNo || 0}</td>
-        <td>${data.numberOfBags || 0}</td>
-        <td>${data.grossWeight || 0}</td>
-        <td>${data.moistureContent || 0}</td>
-        <td>${data.netWeight || 0}</td>
-      `;
-
-      tbody.appendChild(tr);
+      const docId = childSnapshot.key;
+      
+      allTransactions.push({
+        docId: docId,
+        data: data
+      });
     });
     
-    console.log(`Loaded ${transactionCount} transactions`);
+    console.log(`Loaded ${allTransactions.length} transactions`);
+    
+    // Sort and render
+    sortTransactions(currentSortOrder);
   }, (error) => {
     console.error("Error loading transactions:", error);
     tbody.innerHTML = `
       <tr>
-        <td colspan="24" style="text-align:center; color: red;">Error loading transactions: ${error.message}</td>
+        <td colspan="26" style="text-align:center; color: red;">Error loading transactions: ${error.message}</td>
       </tr>`;
   });
 }
@@ -311,4 +406,132 @@ function loadTransactions() {
 window.addEventListener("DOMContentLoaded", () => {
   console.log("Inventory page loaded");
   loadTransactions();
+  
+  // Attach sort dropdown listener
+  document.getElementById('sortSelect').addEventListener('change', (e) => {
+    sortTransactions(e.target.value);
+  });
 });
+
+/* ACTION BUTTON HANDLERS */
+function attachActionListeners() {
+  // Dropdown toggle functionality
+  document.querySelectorAll('.dot-menu').forEach(menu => {
+    menu.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const dropdown = this.nextElementSibling;
+      
+      // Close all other dropdowns
+      document.querySelectorAll('.dropdown-content').forEach(d => {
+        if (d !== dropdown) d.style.display = 'none';
+      });
+      
+      // Toggle current dropdown
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      } else {
+        // Position the dropdown using fixed positioning
+        const rect = this.getBoundingClientRect();
+        dropdown.style.top = (rect.bottom + 5) + 'px';
+        dropdown.style.left = (rect.left - 100) + 'px';
+        dropdown.style.display = 'block';
+      }
+    });
+  });
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown-content').forEach(d => {
+      d.style.display = 'none';
+    });
+  });
+  
+  // Edit button handler
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const docId = this.getAttribute('data-doc-id');
+      console.log('Edit transaction:', docId);
+      editTransaction(docId);
+    });
+  });
+  
+  // Delete button handler
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const docId = this.getAttribute('data-doc-id');
+      
+      if (confirm('Are you sure you want to delete this transaction?')) {
+        deleteTransaction(docId);
+      }
+    });
+  });
+}
+
+/* DELETE TRANSACTION */
+function deleteTransaction(docId) {
+  const transactionRef = database.ref('transactions/' + docId);
+  
+  transactionRef.remove()
+    .then(() => {
+      console.log('Transaction deleted successfully');
+      alert('Transaction deleted successfully!');
+      // Table will auto-update due to Firebase listener
+    })
+    .catch((error) => {
+      console.error('Error deleting transaction:', error);
+      alert('Error deleting transaction: ' + error.message);
+    });
+}
+
+/* EDIT TRANSACTION */
+function editTransaction(docId) {
+  const transactionRef = database.ref('transactions/' + docId);
+  
+  transactionRef.once('value')
+    .then((snapshot) => {
+      if (!snapshot.exists()) {
+        alert('Transaction not found!');
+        return;
+      }
+      
+      const data = snapshot.val();
+      
+      // Populate the form with existing data
+      document.getElementById("officerId").value = data.officerId || "";
+      document.getElementById("officerName").value = data.officerName || "";
+      document.getElementById("warehouseId").value = data.warehouseId || "";
+      document.getElementById("warehouseName").value = data.warehouseName || "";
+      document.getElementById("periodFrom").value = data.periodFrom || "";
+      document.getElementById("periodTo").value = data.periodTo || "";
+      
+      document.getElementById("documentNo").value = data.documentNo || "";
+      document.getElementById("documentType").value = data.documentType || "";
+      document.getElementById("orNo").value = data.orNo || "";
+      document.getElementById("aiNo").value = data.aiNo || "";
+      document.getElementById("refWSINo").value = data.refWSINo || "";
+      document.getElementById("recdFromIssdTo").value = data.recdFromIssdTo || "";
+      document.getElementById("transactionDate").value = data.transactionDate || "";
+      document.getElementById("activityCode").value = data.activityCode || "";
+      document.getElementById("varietyCode").value = data.varietyCode || "";
+      document.getElementById("sackCode").value = data.sackCode || "";
+      document.getElementById("sackCondition").value = data.sackCondition || "";
+      document.getElementById("sackWeight").value = data.sackWeight || "";
+      document.getElementById("age").value = data.age || "";
+      document.getElementById("pileNo").value = data.pileNo || "";
+      document.getElementById("numberOfBags").value = data.numberOfBags || "";
+      document.getElementById("grossWeight").value = data.grossWeight || "";
+      document.getElementById("moistureContent").value = data.moistureContent || "";
+      document.getElementById("netWeight").value = data.netWeight || "";
+      document.getElementById("cancelled").checked = data.cancelled || false;
+      
+      // Store the docId for updating
+      document.getElementById("transactionForm").setAttribute('data-edit-id', docId);
+      
+      // Open the modal
+      transactionModal.style.display = "block";
+    })
+    .catch((error) => {
+      console.error('Error loading transaction:', error);
+      alert('Error loading transaction: ' + error.message);
+    });
+}
