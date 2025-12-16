@@ -44,6 +44,11 @@ fetch("sidebar.html")
 // Store current officer ID for masterfile editing
 let currentOfficerDocId = null;
 
+// Helper function to close all dropdowns
+function closeAllDropdowns() {
+  document.querySelectorAll('.dropdown-content').forEach(d => d.style.display = 'none');
+}
+
 // Initialize modal functionality after DOM loads
 function initializeModals() {
   // ----- ACCOUNTABLE OFFICER MODAL -----
@@ -53,6 +58,7 @@ function initializeModals() {
 
   if (openAccountableBtn) {
     openAccountableBtn.addEventListener("click", () => {
+      closeAllDropdowns(); // Close any open dropdowns
       accountableModal.style.display = "block";
     });
   }
@@ -76,7 +82,9 @@ function initializeModals() {
 
   // Close modals when clicking outside
   window.addEventListener("click", (e) => {
-    if (e.target === accountableModal) accountableModal.style.display = "none";
+    if (e.target === accountableModal) {
+      accountableModal.style.display = "none";
+    }
     const masterfileModal = document.getElementById('masterfileModal');
     if (e.target === masterfileModal) {
       masterfileModal.style.display = "none";
@@ -144,8 +152,8 @@ function addRowToTable(docId, data) {
       <div class="dropdown">
         <span class="dot-menu">&#8942;</span>
         <div class="dropdown-content">
-          <button class="masterfile-btn" data-doc-id="${docId}">Add/Edit Masterfile</button>
-          <button class="delete-btn" data-doc-id="${docId}">Delete</button>
+          <button class="masterfile-btn" data-doc-id="${docId}">📝 Add/Edit Masterfile</button>
+          <button class="delete-btn" data-doc-id="${docId}">🗑️ Delete</button>
         </div>
       </div>
     </td>
@@ -203,9 +211,8 @@ document.getElementById("masterfileForm").addEventListener("submit", (e) => {
     return;
   }
 
-  // FIXED: Get the correct field IDs from your HTML
   const warehouseCode = document.getElementById("warehouse").value;
-  const warehouseName = document.getElementById("warehouse_name").value; // FIXED: underscore not camelCase
+  const warehouseName = document.getElementById("warehouse_name").value;
   const fromDate = document.getElementById("fromDate").value;
   const toDate = document.getElementById("toDate").value;
   const statusExam = document.getElementById("statusExam").value;
@@ -213,7 +220,7 @@ document.getElementById("masterfileForm").addEventListener("submit", (e) => {
 
   const masterfileData = {
     warehouse: warehouseCode,
-    warehouseName: warehouseName, // FIXED: Now properly gets the warehouse name
+    warehouseName: warehouseName,
     fromDate: fromDate,
     toDate: toDate,
     statusExam: statusExam,
@@ -222,7 +229,6 @@ document.getElementById("masterfileForm").addEventListener("submit", (e) => {
   };
 
   console.log("Saving masterfile data:", masterfileData);
-  console.log("Warehouse Name value:", warehouseName);
 
   // Update the officer record with masterfile data
   database.ref('accountableOfficers/' + currentOfficerDocId).update(masterfileData)
@@ -246,11 +252,20 @@ function attachDropdownListeners() {
   document.querySelectorAll('.dot-menu').forEach(dot => {
     dot.addEventListener('click', (e) => {
       e.stopPropagation();
+      
+      // Close all other dropdowns
       document.querySelectorAll('.dropdown-content').forEach(d => {
         if (d !== dot.nextElementSibling) d.style.display = 'none';
       });
+      
       const dropdown = dot.nextElementSibling;
-      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      
+      // Toggle dropdown
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      } else {
+        dropdown.style.display = 'block';
+      }
     });
   });
 
@@ -262,6 +277,9 @@ function attachDropdownListeners() {
       currentOfficerDocId = docId;
       
       console.log("Opening masterfile for officer:", docId);
+      
+      // IMPORTANT: Close all dropdowns before opening modal
+      closeAllDropdowns();
       
       // Load existing data if available
       database.ref('accountableOfficers/' + docId).once('value')
@@ -277,7 +295,7 @@ function attachDropdownListeners() {
               officerMasterField.setAttribute("readonly", true);
             }
             
-            // Pre-fill the Officer Name (Full Name: Last, First Middle)
+            // Pre-fill the Officer Name
             const officerNameField = document.getElementById("officerName");
             if (officerNameField) {
               const lastName = data.lastName || "";
@@ -291,11 +309,10 @@ function attachDropdownListeners() {
             // Pre-fill warehouse code
             document.getElementById("warehouse").value = data.warehouse || "";
             
-            // FIXED: Pre-fill warehouse name using correct ID (warehouse_name with underscore)
+            // Pre-fill warehouse name
             const warehouseNameField = document.getElementById("warehouse_name");
             if (warehouseNameField) {
               warehouseNameField.value = data.warehouseName || "";
-              console.log("Pre-filled warehouse name:", data.warehouseName);
             }
             
             // Pre-fill dates
@@ -328,6 +345,10 @@ function attachDropdownListeners() {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const docId = btn.dataset.docId;
+      
+      // IMPORTANT: Close dropdown before showing confirm dialog
+      closeAllDropdowns();
+      
       if (confirm("Are you sure you want to delete this officer?")) {
         database.ref('accountableOfficers/' + docId).remove()
           .then(() => {
@@ -348,9 +369,17 @@ function attachDropdownListeners() {
 attachDropdownListeners();
 
 // Close dropdowns when clicking outside
-window.addEventListener('click', () => {
-  document.querySelectorAll('.dropdown-content').forEach(d => d.style.display = 'none');
+window.addEventListener('click', (e) => {
+  // Don't close if clicking inside a dropdown
+  if (!e.target.closest('.dropdown')) {
+    closeAllDropdowns();
+  }
 });
+
+// Close dropdowns when scrolling
+window.addEventListener('scroll', () => {
+  closeAllDropdowns();
+}, true);
 
 // Load officers when page loads
 window.addEventListener('DOMContentLoaded', () => {

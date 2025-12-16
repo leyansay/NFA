@@ -19,6 +19,25 @@
   height: 100vh;
   overflow-y: auto;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+
+#goLogout {
+  margin-top: auto !important;
+  color: #e63946;
+  cursor: pointer;
+}
+
+#goLogout:hover {
+  background: #ffe5e7;
 }
 
 @media screen and (max-width:900px){

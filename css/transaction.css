@@ -165,29 +165,6 @@ td.right{text-align:right;font-weight:700;color:#0b1b2b}
   object-fit: cover;
 }
 
-/* RESPONSIVE */
-@media screen and (max-width:900px){
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .sidebar {
-    display: none;
-  }
-  .main {
-    margin-left: 0;
-    width: 100%;
-  }
-  .grid{
-    grid-template-columns:1fr;
-  }
-}
-
-@media screen and (max-width:500px){
-  .cards {
-    grid-template-columns: 1fr;
-  }
-}
-
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -239,6 +216,7 @@ td.right{text-align:right;font-weight:700;color:#0b1b2b}
   color: white;
   border-radius: 6px;
 }
+
 /* Modal background */
 .modal {
   display: none; 
@@ -259,7 +237,7 @@ td.right{text-align:right;font-weight:700;color:#0b1b2b}
   padding: 20px;
   border-radius: 12px;
   width: 90%;
-  max-width: 900px; 
+  max-width: 1200px; 
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
@@ -368,117 +346,293 @@ td.right{text-align:right;font-weight:700;color:#0b1b2b}
   background-color: #074a9e;
 }
 
-/* FIXED: Dropdown menu in table - Action buttons */
-.action-cell {
+/* ========== ENHANCED TABLE LAYOUT ========== */
+
+/* Table wrapper with better scrolling */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible;
   position: relative;
-  text-align: center;
-  padding: 10px !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: white;
+  margin-bottom: 20px;
 }
 
+/* Inventory section */
+.inventory-section {
+  overflow: visible;
+  background: #f8f9fa;
+  padding: 24px;
+  border-radius: 12px;
+}
+
+/* Enhanced table styling */
+.inventory-table {
+  width: 100%;
+  min-width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+  position: relative;
+  background: white;
+  font-size: 13px;
+}
+
+/* Modern table header */
+.inventory-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.inventory-table th {
+  background: linear-gradient(135deg, #0b54b5 0%, #0066ff 100%);
+  color: white;
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  border-bottom: 3px solid #074a9e;
+}
+
+.inventory-table th:first-child {
+  border-top-left-radius: 8px;
+  padding-left: 20px;
+}
+
+.inventory-table th:last-child {
+  border-top-right-radius: 8px;
+  padding-right: 20px;
+}
+
+/* Table body rows */
+.inventory-table tbody tr {
+  position: relative;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.inventory-table tbody tr:hover {
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(11, 84, 181, 0.08);
+  transform: scale(1.001);
+}
+
+.inventory-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Table cells */
+.inventory-table td {
+  padding: 14px 12px;
+  color: #2c3e50;
+  background: white;
+  white-space: nowrap;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.inventory-table td:first-child {
+  padding-left: 20px;
+  font-weight: 600;
+  color: #0b54b5;
+}
+
+.inventory-table td:last-child {
+  padding-right: 20px;
+}
+
+/* Alternating row colors */
+.inventory-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.inventory-table tbody tr:nth-child(even):hover {
+  background-color: #e9ecef;
+}
+
+/* Status badges for cancelled */
+.inventory-table td[data-cancelled="true"] {
+  position: relative;
+}
+
+.inventory-table td[data-cancelled="true"]::before {
+  content: "✓";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: #dc3545;
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* Action cell enhancement */
+.action-cell {
+  position: relative;
+  overflow: visible !important;
+}
+
+/* ===================== DROPDOWN ENHANCEMENTS ===================== */
+
+/* Dropdown container */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
+/* Three-dot menu */
 .dot-menu {
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
   user-select: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  background: #f8f9fa;
+  color: #6c757d;
 }
 
 .dot-menu:hover {
-  background-color: #f0f0f0;
+  background-color: #e9ecef;
+  color: #0b54b5;
+  transform: scale(1.1);
 }
 
+/* Dropdown content */
 .dropdown-content {
   display: none;
-  position: fixed; /* CHANGED: Use fixed positioning instead of absolute */
+  position: fixed;   /* 🔥 KEY FIX */
   background-color: #fff;
   min-width: 140px;
-  box-shadow: 0px 8px 16px rgba(0,0,0,0.25);
-  z-index: 9999;
-  border-radius: 6px;
-  margin-top: 5px;
-  border: 1px solid #e0e0e0;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  z-index: 99999;
+  padding: 5px 0;
+  border: 1px solid #e9ecef;
 }
 
+/* Show class - CRITICAL for dropdown to appear */
+.dropdown-content.show {
+  display: block !important;
+}
+
+/* Buttons inside dropdown */
 .dropdown-content button {
   width: 100%;
-  padding: 12px 16px;
+  background: none;
   border: none;
-  background: white;
+  padding: 8px 12px;
   text-align: left;
   cursor: pointer;
   font-size: 14px;
-  display: block;
-  transition: background-color 0.2s;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.dropdown-content button:last-child {
-  border-bottom: none;
-}
-
-.dropdown-content button:first-child {
-  border-radius: 6px 6px 0 0;
-}
-
-.dropdown-content button:last-child {
-  border-radius: 0 0 6px 6px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  font-weight: 500;
 }
 
 .dropdown-content button:hover {
-  background-color: #f5f5f5;
+  background-color: #f1f1f1;
+  padding-left: 20px;
 }
 
-/* Button specific styles */
-.edit-btn {
-  color: #2196F3;
+/* Optional: highlight row when dropdown is active */
+tr.dropdown-active {
+  background-color: rgba(11, 84, 181, 0.05);
 }
 
-.edit-btn:hover {
-  background-color: #e3f2fd !important;
+/* ===================== END DROPDOWN ===================== */
+
+/* Empty state */
+.inventory-table tbody tr td[colspan] {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+  font-style: italic;
+  background: white !important;
 }
 
-.delete-btn {
-  color: #f44336;
+/* Loading state */
+.inventory-table tbody tr.loading td {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
 }
 
-.delete-btn:hover {
-  background-color: #ffebee !important;
+/* Scrollbar styling for table wrapper */
+.table-wrapper::-webkit-scrollbar {
+  height: 10px;
 }
 
-/* table */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto; /* Horizontal scroll para sa table */
-  overflow-y: hidden; /* No vertical scroll */
-  position: relative;
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
 }
 
-.inventory-section {
-  overflow: visible; /* Allow dropdown to show outside */
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
 }
 
-.inventory-table {
-  width: max-content; /* important for many columns */
-  border-collapse: collapse;
-  position: relative;
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 
-.inventory-table th,
-.inventory-table td {
-  white-space: nowrap; /* prevents text wrapping */
+/* ========== RESPONSIVE ========== */
+@media screen and (max-width:900px){
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sidebar {
+    display: none;
+  }
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+  .grid{
+    grid-template-columns:1fr;
+  }
+  
+  .inventory-table {
+    font-size: 12px;
+  }
+  
+  .inventory-table th,
+  .inventory-table td {
+    padding: 12px 10px;
+  }
+  
+  .inventory-table th {
+    font-size: 11px;
+  }
 }
 
-.inventory-table tbody tr {
-  position: relative;
+@media screen and (max-width:600px){
+  .inventory-table th:first-child,
+  .inventory-table td:first-child {
+    padding-left: 12px;
+  }
+  
+  .inventory-table th:last-child,
+  .inventory-table td:last-child {
+    padding-right: 12px;
+  }
 }
 
-.inventory-table tbody {
-  position: relative;
+@media screen and (max-width:500px){
+  .cards {
+    grid-template-columns: 1fr;
+  }
 }

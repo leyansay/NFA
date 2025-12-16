@@ -13,6 +13,20 @@ fetch("sidebar.html")
     if ($("goTrans"))  $("goTrans").onclick  = () => window.location.href = "transaction.html";
     if ($("goInv"))    $("goInv").onclick    = () => window.location.href = "inventory.html";
     if ($("goReport")) $("goReport").onclick = () => window.location.href = "report.html";
+    
+/* ===== LOGOUT ===== */
+if ($("goLogout")) {
+  $("goLogout").onclick = () => {
+    if (confirm("Are you sure you want to logout?")) {
+      // Clear any session data
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // Clear browser history and redirect
+      window.location.replace("index.html");
+    }
+  };
+}
 
     /* ===== ACTIVE MENU ===== */
 
@@ -45,3 +59,9 @@ fetch("sidebar.html")
 document.addEventListener("DOMContentLoaded", () => {
   if (!document.getElementById("sidebar")?.innerHTML?.trim()) return;
 });
+
+// Prevent back button after logout
+window.history.pushState(null, "", window.location.href);
+window.onpopstate = function() {
+    window.history.pushState(null, "", window.location.href);
+};

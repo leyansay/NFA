@@ -1,39 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFA Inventory Login</title>
-    <link rel="stylesheet" href="css/login.css">
-</head>
-<body>
-    <div class="login-container">
-        <div class="login-box">
-            <img src="image/nfa.png" alt="NFA Logo" class="logo">
-            <h2>COMPUTERIZED STOCK EXAMINATION & TOLA COMPUTATION</h2>
-            
-            <div id="errorMessage" class="error-message"></div>
-            
-            <form id="loginForm" onsubmit="login(event)">
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>NFA Inventory Login</title>
+        <link rel="stylesheet" href="css/login.css">
+    </head>
+    <body>
+        <div class="login-container">
+            <div class="login-box">
+                <img src="image/nfa.png" alt="NFA Logo" class="logo">
+                <h2>COMPUTERIZED STOCK EXAMINATION & TOLA COMPUTATION</h2>
+                
+                <div id="errorMessage" class="error-message"></div>
+                
+                <form id="loginForm" onsubmit="login(event)">
+                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
         </div>
-    </div>
 
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 
-    <!-- Your JS files -->
-    <script src="jscript/app.js"></script>
-    <script src="jscript/auth.js"></script>
+        <!-- Your JS files -->
+        <script src="jscript/app.js"></script>
+        <script src="jscript/auth.js"></script>
 
-    <!-- Bind form submit to login -->
-    <script>
-        document.getElementById("loginForm").addEventListener("submit", login);
-    </script>
-</body>
-</html>
+        <!-- Bind form submit to login -->
+        <script>
+            document.getElementById("loginForm").addEventListener("submit", login);
+        </script>
+    </body>
+    </html>

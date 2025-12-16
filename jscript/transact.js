@@ -99,6 +99,7 @@ function loadOfficersFromFirebase() {
     });
 }
 
+
 /* STEP 1: OPEN OFFICER TABLE */
 document.getElementById("addTransaction").onclick = () => {
   loadOfficersFromFirebase(); // Load fresh data when modal opens
@@ -342,10 +343,10 @@ function renderTransactions() {
       
       <td class="action-cell">
         <div class="dropdown">
-          <span class="dot-menu">&#8942;</span>
-          <div class="dropdown-content">
-            <button class="edit-btn" data-doc-id="${docId}">Edit</button>
-            <button class="delete-btn" data-doc-id="${docId}">Delete</button>
+          <span class="dot-menu" onclick="toggleDropdown(event, '${docId}')">&#8942;</span>
+          <div class="dropdown-content" id="dropdown-${docId}">
+            <button class="edit-btn" onclick="editTransaction('${docId}'); event.stopPropagation();">✏️ Edit</button>
+            <button class="delete-btn" onclick="if(confirm('Are you sure?')) deleteTransaction('${docId}'); event.stopPropagation();">🗑️ Delete</button>
           </div>
         </div>
       </td>
@@ -408,63 +409,58 @@ window.addEventListener("DOMContentLoaded", () => {
   loadTransactions();
   
   // Attach sort dropdown listener
-  document.getElementById('sortSelect').addEventListener('change', (e) => {
-    sortTransactions(e.target.value);
-  });
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      sortTransactions(e.target.value);
+    });
+  }
 });
 
-/* ACTION BUTTON HANDLERS */
+/* ACTION BUTTON HANDLERS - SIMPLIFIED WITH INLINE HANDLERS */
+let activeDropdown = null;
+
+function toggleDropdown(event, docId) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const dropdown = document.getElementById('dropdown-' + docId);
+  const dot = event.currentTarget;
+
+  // Close previously opened dropdown
+  if (activeDropdown && activeDropdown !== dropdown) {
+    activeDropdown.classList.remove('show');
+    activeDropdown.style.display = 'none';
+  }
+
+  // Toggle current dropdown
+  if (dropdown.classList.contains('show')) {
+    dropdown.classList.remove('show');
+    dropdown.style.display = 'none';
+    activeDropdown = null;
+    return;
+  }
+
+  // Position dropdown relative to dots
+  const rect = dot.getBoundingClientRect();
+
+  dropdown.style.position = 'fixed';
+  dropdown.style.top = rect.bottom + 6 + 'px';
+  dropdown.style.left = rect.right - 150 + 'px'; // adjust if needed
+  dropdown.style.display = 'block';
+  dropdown.classList.add('show');
+
+  activeDropdown = dropdown;
+}
+
+
+
+// Close dropdown when clicking outside
+
+
 function attachActionListeners() {
-  // Dropdown toggle functionality
-  document.querySelectorAll('.dot-menu').forEach(menu => {
-    menu.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const dropdown = this.nextElementSibling;
-      
-      // Close all other dropdowns
-      document.querySelectorAll('.dropdown-content').forEach(d => {
-        if (d !== dropdown) d.style.display = 'none';
-      });
-      
-      // Toggle current dropdown
-      if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-      } else {
-        // Position the dropdown using fixed positioning
-        const rect = this.getBoundingClientRect();
-        dropdown.style.top = (rect.bottom + 5) + 'px';
-        dropdown.style.left = (rect.left - 100) + 'px';
-        dropdown.style.display = 'block';
-      }
-    });
-  });
-  
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', () => {
-    document.querySelectorAll('.dropdown-content').forEach(d => {
-      d.style.display = 'none';
-    });
-  });
-  
-  // Edit button handler
-  document.querySelectorAll('.edit-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const docId = this.getAttribute('data-doc-id');
-      console.log('Edit transaction:', docId);
-      editTransaction(docId);
-    });
-  });
-  
-  // Delete button handler
-  document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const docId = this.getAttribute('data-doc-id');
-      
-      if (confirm('Are you sure you want to delete this transaction?')) {
-        deleteTransaction(docId);
-      }
-    });
-  });
+  // This function is now simplified since we use inline onclick handlers
+  console.log('Action listeners attached');
 }
 
 /* DELETE TRANSACTION */
@@ -524,14 +520,36 @@ function editTransaction(docId) {
       document.getElementById("netWeight").value = data.netWeight || "";
       document.getElementById("cancelled").checked = data.cancelled || false;
       
+      
       // Store the docId for updating
       document.getElementById("transactionForm").setAttribute('data-edit-id', docId);
       
       // Open the modal
       transactionModal.style.display = "block";
+      
     })
     .catch((error) => {
       console.error('Error loading transaction:', error);
       alert('Error loading transaction: ' + error.message);
     });
+    
 }
+
+// === MAKE FUNCTIONS GLOBAL FOR INLINE HTML ===
+window.toggleDropdown = toggleDropdown;
+window.editTransaction = editTransaction;
+window.deleteTransaction = deleteTransaction;
+
+document.addEventListener('mousedown', function (e) {
+  if (
+    e.target.closest('.dropdown') ||
+    e.target.closest('.dropdown-content')
+  ) {
+    return; // do nothing
+  }
+
+  document.querySelectorAll('.dropdown-content').forEach(d => {
+    d.classList.remove('show');
+    d.style.display = 'none';
+  });
+});
