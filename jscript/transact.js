@@ -99,7 +99,6 @@ function loadOfficersFromFirebase() {
     });
 }
 
-
 /* STEP 1: OPEN OFFICER TABLE */
 document.getElementById("addTransaction").onclick = () => {
   loadOfficersFromFirebase(); // Load fresh data when modal opens
@@ -152,7 +151,7 @@ document.getElementById("transactionForm").onsubmit = e => {
   // Check if we're editing (has data-edit-id attribute)
   const editId = form.getAttribute('data-edit-id');
   
-  // Collect all transaction data - FIXED: Added IDs to all inputs
+  // Collect all transaction data
   const transactionData = {
     // Accountability Information
     officerId: document.getElementById("officerId").value,
@@ -264,11 +263,6 @@ function computeNetWeight() {
 gross.addEventListener("input", computeNetWeight);
 sack.addEventListener("input", computeNetWeight);
 
-// Load officers when page loads
-window.addEventListener('DOMContentLoaded', () => {
-  console.log("Transaction page loaded");
-});
-
 /* SORT TRANSACTIONS */
 function sortTransactions(order) {
   currentSortOrder = order;
@@ -287,6 +281,11 @@ function sortTransactions(order) {
   
   // Re-render the table
   renderTransactions();
+}
+
+/* Helper function to close all dropdowns */
+function closeAllDropdowns() {
+  document.querySelectorAll('.dropdown-content').forEach(d => d.style.display = 'none');
 }
 
 /* RENDER TRANSACTIONS TO TABLE */
@@ -343,10 +342,10 @@ function renderTransactions() {
       
       <td class="action-cell">
         <div class="dropdown">
-          <span class="dot-menu" onclick="toggleDropdown(event, '${docId}')">&#8942;</span>
-          <div class="dropdown-content" id="dropdown-${docId}">
-            <button class="edit-btn" onclick="editTransaction('${docId}'); event.stopPropagation();">✏️ Edit</button>
-            <button class="delete-btn" onclick="if(confirm('Are you sure?')) deleteTransaction('${docId}'); event.stopPropagation();">🗑️ Delete</button>
+          <span class="dot-menu">&#8942;</span>
+          <div class="dropdown-content">
+            <button class="edit-btn" data-doc-id="${docId}">✏️ Edit</button>
+            <button class="delete-btn" data-doc-id="${docId}">🗑️ Delete</button>
           </div>
         </div>
       </td>
@@ -356,8 +355,72 @@ function renderTransactions() {
   });
   
   // Attach event listeners to action buttons
-  attachActionListeners();
+  attachDropdownListeners();
 }
+
+
+function attachDropdownListeners() {
+  document.querySelectorAll('.dot-menu').forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      
+      // Close all other dropdowns
+      document.querySelectorAll('.dropdown-content').forEach(d => {
+        if (d !== dot.nextElementSibling) d.style.display = 'none';
+      });
+      
+      const dropdown = dot.nextElementSibling;
+      
+      // Toggle dropdown
+      if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+      } else {
+        dropdown.style.display = 'block';
+      }
+    });
+  });
+
+  // Edit button handler
+  document.querySelectorAll('.edit-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const docId = btn.dataset.docId;
+      
+      // Close dropdown before opening modal
+      closeAllDropdowns();
+      
+      editTransaction(docId);
+    });
+  });
+
+  // Delete button handler
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const docId = btn.dataset.docId;
+      
+      // Close dropdown before showing confirm dialog
+      closeAllDropdowns();
+      
+      if (confirm("Are you sure you want to delete this transaction?")) {
+        deleteTransaction(docId);
+      }
+    });
+  });
+}
+
+/* Close dropdowns when clicking outside */
+window.addEventListener('click', (e) => {
+  // Don't close if clicking inside a dropdown
+  if (!e.target.closest('.dropdown')) {
+    closeAllDropdowns();
+  }
+});
+
+/* Close dropdowns when scrolling */
+window.addEventListener('scroll', () => {
+  closeAllDropdowns();
+}, true);
 
 /* LOAD TRANSACTIONS FROM FIREBASE */
 function loadTransactions() {
@@ -403,66 +466,6 @@ function loadTransactions() {
   });
 }
 
-// Initialize page
-window.addEventListener("DOMContentLoaded", () => {
-  console.log("Inventory page loaded");
-  loadTransactions();
-  
-  // Attach sort dropdown listener
-  const sortSelect = document.getElementById('sortSelect');
-  if (sortSelect) {
-    sortSelect.addEventListener('change', (e) => {
-      sortTransactions(e.target.value);
-    });
-  }
-});
-
-/* ACTION BUTTON HANDLERS - SIMPLIFIED WITH INLINE HANDLERS */
-let activeDropdown = null;
-
-function toggleDropdown(event, docId) {
-  event.preventDefault();
-  event.stopPropagation();
-
-  const dropdown = document.getElementById('dropdown-' + docId);
-  const dot = event.currentTarget;
-
-  // Close previously opened dropdown
-  if (activeDropdown && activeDropdown !== dropdown) {
-    activeDropdown.classList.remove('show');
-    activeDropdown.style.display = 'none';
-  }
-
-  // Toggle current dropdown
-  if (dropdown.classList.contains('show')) {
-    dropdown.classList.remove('show');
-    dropdown.style.display = 'none';
-    activeDropdown = null;
-    return;
-  }
-
-  // Position dropdown relative to dots
-  const rect = dot.getBoundingClientRect();
-
-  dropdown.style.position = 'fixed';
-  dropdown.style.top = rect.bottom + 6 + 'px';
-  dropdown.style.left = rect.right - 150 + 'px'; // adjust if needed
-  dropdown.style.display = 'block';
-  dropdown.classList.add('show');
-
-  activeDropdown = dropdown;
-}
-
-
-
-// Close dropdown when clicking outside
-
-
-function attachActionListeners() {
-  // This function is now simplified since we use inline onclick handlers
-  console.log('Action listeners attached');
-}
-
 /* DELETE TRANSACTION */
 function deleteTransaction(docId) {
   const transactionRef = database.ref('transactions/' + docId);
@@ -471,7 +474,6 @@ function deleteTransaction(docId) {
     .then(() => {
       console.log('Transaction deleted successfully');
       alert('Transaction deleted successfully!');
-      // Table will auto-update due to Firebase listener
     })
     .catch((error) => {
       console.error('Error deleting transaction:', error);
@@ -520,7 +522,6 @@ function editTransaction(docId) {
       document.getElementById("netWeight").value = data.netWeight || "";
       document.getElementById("cancelled").checked = data.cancelled || false;
       
-      
       // Store the docId for updating
       document.getElementById("transactionForm").setAttribute('data-edit-id', docId);
       
@@ -532,24 +533,20 @@ function editTransaction(docId) {
       console.error('Error loading transaction:', error);
       alert('Error loading transaction: ' + error.message);
     });
-    
 }
 
-// === MAKE FUNCTIONS GLOBAL FOR INLINE HTML ===
-window.toggleDropdown = toggleDropdown;
-window.editTransaction = editTransaction;
-window.deleteTransaction = deleteTransaction;
+attachDropdownListeners();
 
-document.addEventListener('mousedown', function (e) {
-  if (
-    e.target.closest('.dropdown') ||
-    e.target.closest('.dropdown-content')
-  ) {
-    return; // do nothing
+// Initialize page
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("Transaction page loaded");
+  loadTransactions();
+  
+  // Attach sort dropdown listener
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      sortTransactions(e.target.value);
+    });
   }
-
-  document.querySelectorAll('.dropdown-content').forEach(d => {
-    d.classList.remove('show');
-    d.style.display = 'none';
-  });
 });
