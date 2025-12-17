@@ -7,12 +7,10 @@
   <link rel="stylesheet" href="css/accountable.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
   <link rel="stylesheet" href="css/user-component.css" />
-  
-  <!-- Firebase CDN Scripts -->
+  <link rel="stylesheet" href="css/accountable-header.css" />
 </head>
 <body>
   <div class="app">
-    
     <!-- SIDEBAR -->
     <div id="sidebar"></div>
 
@@ -39,103 +37,109 @@
       </div>
     </div>
 
- <!-- Masterfile Modal -->
-<div id="masterfileModal" class="modal">
-  <div class="modal-content">
-    <span class="close" id="closeMasterfile">&times;</span>
-    <h2>Data Entry of Tola Masterfile</h2>
-    
-    <form id="masterfileForm">
-      <div class="form-container">
+    <!-- Masterfile Modal -->
+    <div id="masterfileModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeMasterfile">&times;</span>
+        <h2>Data Entry of Tola Masterfile</h2>
         
-        <!-- Accountable Officer Number & Officer Name -->
-        <div class="form-row first-row">
-          <label for="officerMaster">Accountable Officer Number :</label>
-          <input type="text" id="officerMaster" name="officerMaster" required readonly />
-          <input type="text" id="officerName" name="officerName" readonly placeholder="Officer Full Name" />
-        </div>
+        <form id="masterfileForm">
+          <div class="form-container">
+            
+            <!-- Accountable Officer Number & Officer Name (SAME LINE) -->
+            <div class="form-row first-row">
+              <label for="officerMaster">Accountable Officer Number:</label>
+              <input type="text" id="officerMaster" name="officerMaster" required readonly />
+              <input type="text" id="officerName" name="officerName" readonly placeholder="Officer Full Name" />
+            </div>
 
-        <!-- Warehouse Code & Warehouse Name -->
-        <div class="form-row warehouse-row">
-          <label for="warehouse">Warehouse Code :</label>
-          <input type="text" id="warehouse" name="warehouse" required />
-         <input type="text" id="warehouse_name" name="warehouseName" />
-        </div>
+            <!-- Warehouse Code & Warehouse Name (SAME LINE) -->
+            <div class="form-row warehouse-row">
+              <label for="warehouse">Warehouse Code:</label>
+              <input type="text" id="warehouse" name="warehouse" required />
+              <input type="text" id="warehouse_name" name="warehouseName" placeholder="Warehouse Name" />
+            </div>
 
-        <!-- Period of Accountability -->
-        <div class="form-row dates">
-          <label for="fromDate">Period of Accountability :</label>
-          <input type="date" id="fromDate" name="fromDate" required />
-          <span class="date-separator">To</span>
-          <input type="date" id="toDate" name="toDate" required />
-        </div>
+            <!-- Period of Accountability -->
+            <div class="form-row dates">
+              <label for="fromDate">Period of Accountability:</label>
+              <input type="date" id="fromDate" name="fromDate" required />
+              <span class="date-separator">To</span>
+              <input type="date" id="toDate" name="toDate" required />
+            </div>
 
-        <!-- Status of Examination -->
-        <div class="form-row status">
-          <label for="statusExam">Status of Examination :</label>
-          <select id="statusExam" name="statusExam" required>
-            <option value="">Select status</option>
-            <option value="Pending">Pending</option>
-            <option value="Examined">Examined</option>
-            <option value="For Review">For Review</option>
-          </select>
-          <div></div>
-        </div>
+            <!-- Status of Examination -->
+            <div class="form-row status">
+              <label for="statusExam">Status of Examination:</label>
+              <select id="statusExam" name="statusExam" required>
+                <option value="">Select status</option>
+                <option value="Pending">Pending</option>
+                <option value="Examined">Examined</option>
+                <option value="For Review">For Review</option>
+              </select>
+              <div></div>
+            </div>
 
-        <!-- Notes -->
-        <div class="form-row notes">
-          <label for="note" class="notes-label">Notes:</label>
-          <textarea id="note" name="note"></textarea>
-        </div>
+            <!-- Notes -->
+            <div class="form-row notes">
+              <label for="note" class="notes-label">Notes:</label>
+              <textarea id="note" name="note" placeholder="Enter any additional notes here..."></textarea>
+            </div>
 
-        <!-- Buttons -->
-        <div class="button-container">
-          <button type="submit">Save</button>
-          <button type="button" id="cancelBtn">Cancel</button>
-        </div>
-        
+            <!-- Buttons -->
+            <div class="button-container">
+              <button type="submit" class="btn btn-primary">Save</button>
+              <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+            </div>
+            
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
+    </div>
 
     <!-- MAIN CONTENT -->
     <main class="main">
-
       <section class="inventory-section">
 
-        <!-- Section Header -->
-        <div class="section-header">
-          <h2>Accountable Officer</h2>
+        <!-- STICKY HEADER -->
+        <div class="sticky-header">
+          <div class="header-content">
+            <h2>Accountable Officer</h2>
+            
+            <div class="header-actions">
+              <!-- User Info Component -->
+              <div class="user-info" id="userInfoDropdown">
+                <div class="user-text">
+                  <span class="username-display">Hi, nfa_admin</span>
+                  <span class="user-role">USER</span>
+                </div>
+                <div class="user-avatar">
+                  <span class="user-initials">N</span>
+                </div>
+                
+                <!-- Dropdown Menu -->
+                <div class="user-dropdown" id="userDropdown">
+                  <div class="dropdown-item" id="logoutBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-width="2" stroke-linecap="round"/>
+                      <polyline points="16 17 21 12 16 7" stroke-width="2" stroke-linecap="round"/>
+                      <line x1="21" y1="12" x2="9" y2="12" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Logout
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-  <!-- User Info Component -->
-      <div class="user-info" id="userInfoDropdown">
-        <div class="user-text">
-          <span class="username-display">Hi, User</span>
-          <span class="user-role">Admin</span>
-        </div>
-        <div class="user-avatar">
-          <span class="user-initials">AM</span>
-        </div>
-        
-        <!-- Dropdown Menu -->
-        <div class="user-dropdown" id="userDropdown">
-          <div class="dropdown-item" id="logoutBtn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-width="2" stroke-linecap="round"/>
-              <polyline points="16 17 21 12 16 7" stroke-width="2" stroke-linecap="round"/>
-              <line x1="21" y1="12" x2="9" y2="12" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            Logout
+          <!-- DIVIDER LINE -->
+          <div class="header-divider"></div>
+
+          <!-- SECOND ROW: Add Button -->
+          <div class="controls-row">
+            <button class="add-btn" id="openModal">+ Add Accountable Officer</button>
           </div>
         </div>
-      </div>
-
-
-        </div>
-        <div class="button-group">
-  <button class="add-btn" id="openModal">+ Add Accountable Officer</button>
-</div>
 
         <!-- Table -->
         <table class="inventory-table">
@@ -157,11 +161,10 @@
         </table>
 
       </section>
-
     </main>
   </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
   <script src="jscript/sidebar.js"></script>
