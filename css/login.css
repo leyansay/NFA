@@ -5,6 +5,7 @@ body {
     padding: 0;
     position: relative;
 }
+
 body::before {
     content: "";
     position: fixed; /* stays behind everything */
@@ -60,6 +61,7 @@ body::before {
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .login-box button {
@@ -78,38 +80,47 @@ body::before {
     background: #1a5f7a;
 }
 
-        .error-message {
-            color: #e63946;
-            background: #ffe5e7;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            display: none;
-        }
-        .error-message.show {
-            display: block;
-        }
+/* Error message styling */
+.error-message {
+    color: #e63946;
+    background: #ffe5e7;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    display: none;
+}
 
-        .password-container {
+.error-message.show {
+    display: block;
+}
+
+/* Password container with toggle icon */
+.password-container {
     position: relative;
 }
 
 .password-container input {
     width: 100%;
-    padding-right: 40px; /* space for the toggle icon */
+    padding-right: 45px; /* space for the toggle icon */
 }
 
-.toggle-icon {
+.toggle-password {
     position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 12px;
+    top: 10px;
     cursor: pointer;
-    font-size: 18px;
+    color: #666;
+    user-select: none;
+    display: flex;
+    align-items: center;
 }
 
+.toggle-password:hover {
+    color: #102da1;
+}
 
+/* Footer text */
 .footer-text {
     margin-top: 15px;
     font-size: 12px;

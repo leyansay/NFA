@@ -3,61 +3,80 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NFA Rice Inventory — Inventory</title>
-<link rel="stylesheet" href="css/inventory.css">
+<title>NFA Rice Inventory — Transaction</title>
 <link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/inventory.css">
+<style>
+.table-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: #0b54b5;
+  margin: 10px 0 15px 0;
+  padding: 10px;
+}
+</style>
 </head>
-
 <body>
+
 <div class="app">
-
-  <!-- SIDEBAR -->
-  <div id="sidebar"></div>
-
-  <main class="main">
-
-    <!-- SECTION HEADER WITH BUTTONS -->
-    <div class="section-header">
-      <h2>Inventory Items</h2>
-      <div class="button-group">
-        <button class="add-btn active-btn" id="btnRice">Rice</button>
-        <button class="add-btn" id="btnPalay">Palay</button>
-      </div>
-    </div>
-
-    <!-- PANEL CONTAINER -->
-    <div class="panel">
-      <!-- PANEL HEADER: SEARCH -->
-      <div class="panel-header">
-        <div class="search">
-          <span class="search-icon">🔍︎</span>
-          <input type="text" id="searchInput" placeholder="Search inventory..." />
-        </div>
-      </div>
-
-      <!-- INVENTORY TABLE -->
-      <section class="inventory-section" id="inventoryContent">
-        <table class="inventory-table">
-          <thead>
-            <tr>
-              <th>Item Code</th>
-              <th>Variety</th>
-              <th>Warehouse</th>
-              <th>Stock</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>R-001</td><td>IR64</td><td>GID 1</td><td>5000</td></tr>
-            <tr><td>R-002</td><td>PSB Rc18</td><td>GID 2</td><td>3200</td></tr>
-          </tbody>
-        </table>
-      </section>
-    </div>
-
-  </main>
+    <div id="sidebar"></div>
 </div>
 
-<script src="jscript/inventory.js"></script>
-<script src="jscript/sidebar.js"></script>
+<!-- MAIN CONTENT -->
+<main class="main">
+  <section class="inventory-section">
+    <div class="section-header">
+      <h2>Inventory</h2>
+      <div>
+        <button class="add-btn" id="previewTransaction">👁 Preview</button>
+      </div>
+    </div>
+
+    <!-- GID 1 TABLE -->
+    <h3 class="table-title">GID 1</h3>
+    <div class="table-wrapper">
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Pile No.</th>
+            <th>Variety</th>
+            <th>No. of Bags</th>
+            <th>Net Kg.</th>
+            <th>Age</th>
+          </tr>
+        </thead>
+        <tbody id="inventoryBody">
+          <tr><td colspan="5" style="text-align:center;">Loading transactions...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- GID 2 TABLE -->
+    <h3 class="table-title">GID 2</h3>
+    <div class="table-wrapper">
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Pile No.</th>
+            <th>Variety</th>
+            <th>No. of Bags</th>
+            <th>Net Kg.</th>
+            <th>Age</th>
+          </tr>
+        </thead>
+        <tbody id="inventoryBody2">
+          <tr><td colspan="5" style="text-align:center;">Loading transactions...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="jscript/sidebar.js"></script>
+  <script src="jscript/inventory.js"></script>
+
 </body>
 </html>
