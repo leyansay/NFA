@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Transaction Report - Print Preview</title>
-<link rel="stylesheet" href="css/preview.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="css/preview.css">
 </head>
 <body>
   <div class="no-print">
@@ -13,62 +12,89 @@
   </div>
 
   <div class="print-container">
-<div class="report-header">
-  <div class="header-content">
-    <img src="image/nfa.png" alt="NFA Logo" class="nfa-logo">
-
-    <div class="header-text">
-      <h1>NATIONAL FOOD AUTHORITY</h1>
-      <h2>Rice Inventory Transaction Report</h2>
-    </div>
-  </div>
-</div>
-
-    <div class="report-info">
-      <div>
-        <strong>Report Generated:</strong> <span id="reportDate"></span>
-      </div>
-      <div>
-        <strong>Total Transactions:</strong> <span id="totalTransactions">0</span>
+    <div class="report-header">
+      <div class="header-content">
+        <img src="image/nfa.png" alt="NFA Logo" class="nfa-logo">
+        <div class="header-text">
+          <h1>NATIONAL FOOD AUTHORITY</h1>
+          <h2>Rice Inventory Transaction Report</h2>
+        </div>
       </div>
     </div>
 
-    <table class="report-table">
-      <thead>
-        <tr>
-          <th>Officer ID</th>
-          <th>Officer Name</th>
-          <th>WH ID</th>
-          <th>WH Name</th>
-          <th>Period From</th>
-          <th>Period To</th>
-          <th>Doc No.</th>
-          <th>Cancelled</th>
-          <th>Doc Type</th>
-          <th>OR No.</th>
-          <th>AI No.</th>
-          <th>Ref WSI</th>
-          <th>Recd/Issd</th>
-          <th>Date</th>
-          <th>Activity</th>
-          <th>Variety</th>
-          <th>Sack</th>
-          <th>Cond.</th>
-          <th>Sack Wt</th>
-          <th>Age</th>
-          <th>Pile</th>
-          <th>Bags</th>
-          <th>Gross</th>
-          <th>MC%</th>
-          <th>Net Wt</th>
-        </tr>
-      </thead>
-      <tbody id="reportBody">
-        <tr>
-          <td colspan="25" class="loading">Loading transactions...</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="report-details">
+      <div class="detail-row">
+        <div>
+          <span class="detail-label">Name of Accountable Officer:</span>
+          <span id="officerName">_______________________________</span>
+        </div>
+        <div>
+          <span class="detail-label">Report Generated:</span>
+          <span id="reportDate">_______________________________</span>
+        </div>
+      </div>
+      <div class="detail-row">
+        <div>
+          <span class="detail-label">Warehouse Name:</span>
+          <span id="warehouseName">_______________________________</span>
+        </div>
+        <div>
+          <span class="detail-label">Total Transactions:</span>
+          <span id="totalTransactions">0</span>
+        </div>
+      </div>
+      <div class="detail-row">
+        <div>
+          <span class="detail-label">Warehouse Location:</span>
+          <span id="warehouseLocation">_______________________________</span>
+        </div>
+      </div>
+      <div class="detail-row">
+        <div>
+          <span class="detail-label">Period Covered:</span>
+          <span id="periodFrom">__________</span> to <span id="periodTo">__________</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>Officer ID</th>
+            <th>Officer Name</th>
+            <th>WH ID</th>
+            <th>WH Name</th>
+            <th>Period From</th>
+            <th>Period To</th>
+            <th>Doc No.</th>
+            <th>Cancelled</th>
+            <th>Doc Type</th>
+            <th>OR No.</th>
+            <th>AI No.</th>
+            <th>Ref WSI</th>
+            <th>Recd/Issd</th>
+            <th>Date</th>
+            <th>Activity</th>
+            <th>Variety</th>
+            <th>Sack</th>
+            <th>Cond.</th>
+            <th>Sack Wt</th>
+            <th>Age</th>
+            <th>Pile</th>
+            <th>Bags</th>
+            <th>Gross</th>
+            <th>MC%</th>
+            <th>Net Wt</th>
+          </tr>
+        </thead>
+        <tbody id="reportBody">
+          <tr>
+            <td colspan="25" class="loading">Loading transactions...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="report-footer">
       <div class="signature-section">

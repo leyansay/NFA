@@ -70,7 +70,7 @@
         <div><label>Document Type</label>
           <select id="documentType">
             <option value="">Select</option>
-            <option>RIS</option><option>DR</option><option>WSI</option><option>Invoice</option>
+            <option>Issue</option><option>receipt</option><option>3</option><option>4</option>
           </select>
         </div>
         <div><label>OR No.</label><input type="text" id="orNo"></div>
@@ -92,19 +92,19 @@
         <div><label>Sack Condition</label>
           <select id="sackCondition"><option value="">Select</option><option>Good</option><option>Damaged</option></select>
         </div>
-        <div><label>Sack Weight</label><input type="number" id="sackWeight"></div>
+        <div><label>Sack Weight</label><input type="number" id="sackWeight" step="0.001" min="0"></div>
       </div>
       <div class="grid-3">
-        <div><label>Age</label><input type="text" id="age"></div>
+        <div><label>Age (Months)</label><input type="text" id="age" step="0.1" min="0" max="1.0"></div>
         <div><label>Pile No.</label><input type="text" id="pileNo"></div>
       </div>
       <div class="grid-3">
         <div><label>No. of Bags</label><input type="number" id="numberOfBags"></div>
-        <div><label>Gross Weight</label><input type="number" id="grossWeight"></div>
-        <div><label>% MC</label><input type="number" id="moistureContent"></div>
+        <div><label>Gross Weight</label><input type="number" id="grossWeight" step="0.001" min="0"></div>
+        <div><label>% MC</label><input type="number" id="moistureContent" step="0.001" min="0"></div>
       </div>
       <div class="grid">
-        <div><label>Net Weight</label><input type="number" id="netWeight" readonly></div>
+        <div><label>Net Weight</label><input type="number" id="netWeight" step="0.001" min="0" readonly></div>
       </div>
       <button type="submit">Save Transaction</button>
     </form>

@@ -173,13 +173,13 @@ document.getElementById("transactionForm").onsubmit = e => {
     varietyCode: document.getElementById("varietyCode").value || "",
     sackCode: document.getElementById("sackCode").value || "",
     sackCondition: document.getElementById("sackCondition").value || "",
-    sackWeight: parseFloat(document.getElementById("sackWeight").value) || 0,
-    age: parseFloat(document.getElementById("age").value) || 0,
-    pileNo: parseFloat(document.getElementById("pileNo").value) || 0,
-    numberOfBags: parseFloat(document.getElementById("numberOfBags").value) || 0,
-    grossWeight: parseFloat(document.getElementById("grossWeight").value) || 0,
-    moistureContent: parseFloat(document.getElementById("moistureContent").value) || 0,
-    netWeight: parseFloat(document.getElementById("netWeight").value) || 0,
+    sackWeight: document.getElementById("sackWeight").value || "",
+    age: document.getElementById("age").value || "",
+    pileNo: document.getElementById("pileNo").value || "",
+    numberOfBags: document.getElementById("numberOfBags").value || "",
+    grossWeight: document.getElementById("grossWeight").value || "",
+    moistureContent: document.getElementById("moistureContent").value || "",
+    netWeight: document.getElementById("netWeight").value || "",
     cancelled: document.getElementById("cancelled").checked,
     
     // Metadata
@@ -252,16 +252,22 @@ document.getElementById("transactionForm").onsubmit = e => {
 /* NET WEIGHT COMPUTATION */
 const gross = document.getElementById("grossWeight");
 const sack = document.getElementById("sackWeight");
+const bags = document.getElementById("numberOfBags");
 const net = document.getElementById("netWeight");
 
 function computeNetWeight() {
   const g = parseFloat(gross.value) || 0;
   const s = parseFloat(sack.value) || 0;
-  net.value = (g - s).toFixed(2);
+  const b = parseFloat(bags.value) || 0;
+  
+  // Sack weight × Number of bags, then subtract from gross weight
+  const totalSackWeight = s * b;
+  net.value = (g - totalSackWeight).toFixed(2);
 }
 
 gross.addEventListener("input", computeNetWeight);
 sack.addEventListener("input", computeNetWeight);
+bags.addEventListener("input", computeNetWeight);
 
 /* SORT TRANSACTIONS */
 function sortTransactions(order) {
@@ -328,15 +334,15 @@ function renderTransactions() {
 
       <td>${data.sackCode || "-"}</td>
       <td>${data.sackCondition || "-"}</td>
-      <td>${data.sackWeight || 0}</td>
+      <td>${data.sackWeight || "-"}</td>
 
-      <td>${data.age || 0}</td>
-      <td>${data.pileNo || 0}</td>
-      <td>${data.numberOfBags || 0}</td>
+      <td>${data.age || "-"}</td>
+      <td>${data.pileNo || "-"}</td>
+      <td>${data.numberOfBags || "-"}</td>
 
-      <td>${data.grossWeight || 0}</td>
-      <td>${data.moistureContent || 0}</td>
-      <td>${data.netWeight || 0}</td>
+      <td>${data.grossWeight || "-"}</td>
+      <td>${data.moistureContent || "-"}</td>
+      <td>${data.netWeight || "-"}</td>
 
       <td>${data.cancelled ? "Yes" : "No"}</td>
       
