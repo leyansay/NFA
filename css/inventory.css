@@ -1,5 +1,4 @@
 :root{
-  --primary:#0b54b5;
   --accent:#e63946;
   --card-radius:12px;
   --bg-image: url('rice.jpg');
@@ -314,18 +313,20 @@ td.right{
 
 .add-btn {
   background: var(--primary);
-  color: white;
-  border: none;
+  color: rgb(0, 0, 0);
+border-color: #0066ff;
   padding: 10px 16px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 300;
   border-radius: 8px;
+  margin-left: 800PX;
   cursor: pointer;
   transition: 0.2s ease;
 }
 
 .add-btn:hover {
   background: #06408a;
+  color: white;
 }
 
 /* Sort dropdown */
@@ -723,6 +724,25 @@ td.right{
   .inventory-table td {
     padding: 12px 10px;
   }
+
+.user-info-fixed-wrapper {
+  position: sticky;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  background: inherit;
+  margin-bottom: 1rem;
+}
+
+  .table-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #0b54b5;
+  padding: 10px;
+}
   
   .inventory-table th {
     font-size: 11px;

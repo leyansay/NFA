@@ -14,19 +14,9 @@ fetch("sidebar.html")
     if ($("goInv"))    $("goInv").onclick    = () => window.location.href = "inventory.html";
     if ($("goReport")) $("goReport").onclick = () => window.location.href = "report.html";
     
-/* ===== LOGOUT ===== */
-if ($("goLogout")) {
-  $("goLogout").onclick = () => {
-    if (confirm("Are you sure you want to logout?")) {
-      // Clear any session data
-      localStorage.clear();
-      sessionStorage.clear();
-      
-      // Clear browser history and redirect
-      window.location.replace("index.html");
-    }
-  };
-}
+
+
+
 
     /* ===== ACTIVE MENU ===== */
 
@@ -65,3 +55,4 @@ window.history.pushState(null, "", window.location.href);
 window.onpopstate = function() {
     window.history.pushState(null, "", window.location.href);
 };
+

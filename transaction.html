@@ -6,6 +6,7 @@
 <title>NFA Rice Inventory — Transaction</title>
 <link rel="stylesheet" href="css/sidebar.css">
 <link rel="stylesheet" href="css/transaction.css">
+<link rel="stylesheet" href="css/user-component.css" />
 </head>
 <body>
 
@@ -115,11 +116,30 @@
   <section class="inventory-section">
     <div class="section-header">
       <h2>Transaction</h2>
-      <div>
-        <button class="add-btn" id="previewTransaction" style="margin-right:10px;">👁 Preview</button>
-        <button class="add-btn" id="addTransaction">+ Add Transaction</button>
+       <!-- User Info Component -->
+      <div class="user-info" id="userInfoDropdown">
+        <div class="user-text">
+          <span class="username-display">Hi, User</span>
+          <span class="user-role">Admin</span>
+        </div>
+        <div class="user-avatar">
+          <span class="user-initials">AM</span>
+        </div>
+        
+        <!-- Dropdown Menu -->
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-item" id="logoutBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-width="2" stroke-linecap="round"/>
+              <polyline points="16 17 21 12 16 7" stroke-width="2" stroke-linecap="round"/>
+              <line x1="21" y1="12" x2="9" y2="12" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Logout
+          </div>
+        </div>
       </div>
     </div>
+
 
     <!-- SORT -->
     <div style="margin-bottom:15px; display:flex; gap:10px; align-items:center;">
@@ -128,6 +148,11 @@
         <option value="newest">Newest First</option>
         <option value="oldest">Oldest First</option>
       </select>
+
+        <div>
+        <button class="add-btn1" id="previewTransaction">👁 Preview</button>
+        <button class="add-btn2" id="addTransaction">+ Add Transaction</button>
+      </div>
     </div>
 
     <div class="table-wrapper">
@@ -153,6 +178,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script src="jscript/sidebar.js"></script>
+  <script src="jscript/user-auth.js"></script>
   <script src="jscript/transact.js"></script>
 
 </body>

@@ -114,7 +114,7 @@ body::before {
     user-select: none;
     display: flex;
     align-items: center;
-}
+}   
 
 .toggle-password:hover {
     color: #102da1;

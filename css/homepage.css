@@ -14,8 +14,6 @@ body{
   color:#0b1b2b;
 }
 
-
-
 .logo{
   display:flex;
   align-items:center;
@@ -70,12 +68,6 @@ body{
   font-size:14px;
   background:transparent;
   width:100%;
-}
-.user{
-  display:flex;align-items:center;gap:12px;
-}
-.user .avatar{
-  width:44px;height:44px;border-radius:50%;background:#e9eef5;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0b54b5;
 }
 
 /* Panel - NO top margin pushing content down */
@@ -205,6 +197,16 @@ td.right{text-align:right;font-weight:700;color:#0b1b2b}
   .cards {
     grid-template-columns: 1fr;
   }
+  
+  .topbar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .search {
+    min-width: 100%;
+    order: 3;
+  }
 }
 
 .section-header {
@@ -324,28 +326,6 @@ td.right{text-align:right;font-weight:700;color:#0b1b2b}
 
 .dropdown-content button:hover {
   background-color: #f0f0f0;
-}
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-}
-
-.modal-content {
-  background: #fff;
-  width: 90%;
-  max-width: 900px;
-  margin: 5% auto;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.close {
-  float: right;
-  font-size: 22px;
-  cursor: pointer;
 }
 
 input, select {

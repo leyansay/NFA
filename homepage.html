@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NFA Rice Inventory — Dashboard</title>
   <link rel="stylesheet" href="css/homepage.css" />
+  <link rel="stylesheet" href="css/user-component.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
 </head>
 <body>
   <div class="app">
-    <div id="sidebar">
-    </div>
-</div>
+    <div id="sidebar"></div>
+  </div>
 
-    <main class="main">
-      <div class="topbar">
-            <div class="topbar">
+  <main class="main">
+    <div class="topbar">
       <h2 class="page-title">DASHBOARD</h2>
 
       <div class="search">
@@ -24,73 +23,84 @@
         </svg>
         <input placeholder="Search item, warehouse or report..." aria-label="search">
       </div>
-    </div>
 
-
-        <div class="user">
-          <div style="text-align:right">
-            <div style="font-weight:700">Hi, Andy Michael</div>
-            <div style="font-size:12px;color:#6b7a86">Admin</div>
+      <!-- User Info Component -->
+      <div class="user-info" id="userInfoDropdown">
+        <div class="user-text">
+          <span class="username-display">Hi, User</span>
+          <span class="user-role">Admin</span>
+        </div>
+        <div class="user-avatar">
+          <span class="user-initials">AM</span>
+        </div>
+        
+        <!-- Dropdown Menu -->
+        <div class="user-dropdown" id="userDropdown">
+          <div class="dropdown-item" id="logoutBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-width="2" stroke-linecap="round"/>
+              <polyline points="16 17 21 12 16 7" stroke-width="2" stroke-linecap="round"/>
+              <line x1="21" y1="12" x2="9" y2="12" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Logout
           </div>
-          <div class="avatar">AM</div>
         </div>
       </div>
-
-      <!-- Wrap Cards in Panel -->
-     <!-- Wrap Cards in Panel -->
-<div class="panel">
-    <div style="font-size:24px; font-weight:800; color:var(--primary); margin-bottom:16px;">
-  Summary Reports
-</div>
-
-  <a href="reports.html" class="card-link">
-  <div class="cards">
-    <div class="card yellow">
-      <div class="label">TOTAL RICE EQV'T (DDN)</div>
-      <div class="value">49,522</div>
     </div>
-    </a>
 
-    <a href="reports.html" class="card-link">
-    <div class="card red">
-      <div class="label">TOTAL RICE EQV'T (DDO)</div>
-      <div class="value">29,673</div>
+    <!-- Wrap Cards in Panel -->
+    <div class="panel">
+      <div style="font-size:24px; font-weight:800; color:var(--primary); margin-bottom:16px;">
+        Summary Reports
+      </div>
+
+      <div class="cards">
+        <a href="reports.html" class="card-link">
+          <div class="card yellow">
+            <div class="label">TOTAL RICE EQV'T (DDN)</div>
+            <div class="value">49,522</div>
+          </div>
+        </a>
+
+        <a href="reports.html" class="card-link">
+          <div class="card red">
+            <div class="label">TOTAL RICE EQV'T (DDO)</div>
+            <div class="value">29,673</div>
+          </div>
+        </a>
+
+        <a href="reports.html" class="card-link">
+          <div class="card green">
+            <div class="label">DAILY CONSUMPTION RATE (DDN)</div>
+            <div class="value">8,690 / 3,000</div>
+          </div>
+        </a>
+
+        <a href="reports.html" class="card-link">
+          <div class="card green">
+            <div class="label">DAILY CONSUMPTION RATE 9(DDO)</div>
+            <div class="value">7,850</div>
+          </div>
+        </a>
+
+        <a href="reports.html" class="card-link">
+          <div class="card blue">
+            <div class="label">CEREAL PROC'T FUND</div>
+            <div class="value">9,969,378.94</div>
+          </div>
+        </a>
+
+        <div class="card" style="background:transparent;box-shadow:none;"></div>
+      </div>
     </div>
-    </a>
+  </main>
 
-    <a href="reports.html" class="card-link">
-    <div class="card green">
-      <div class="label">DAILY CONSUMPTION RATE (DDN)</div>
-      <div class="value">8,690 / 3,000</div>
-    </div>
-    </a>
-
-    
-   <a href="reports.html" class="card-link">
-  <div class="card green">
-    <div class="label">DAILY CONSUMPTION RATE 9(DDO)</div>
-    <div class="value">7,850</div>
-  </div>
-</a>
-
-    <a href="reports.html" class="card-link">
-  <div class="card blue">
-    <div class="label">CEREAL PROC'T FUND</div>
-    <div class="value">9,969,378.94</div>
-  </div>
-</a>
-
-
-    
-    <!-- Optional: Add a 6th card for complete 2x3 grid (can leave empty if not needed) -->
-    <div class="card" style="background:transparent;box-shadow:none;"></div>
-  </div>
-</div>
-    </main>
-  </div>
-
+  <!-- Scripts - IMPORTANT ORDER! -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="app.js"></script>
+  <script src="jscript/user-auth.js"></script>
   <script src="jscript/home.js"></script>
   <script src="jscript/sidebar.js"></script>
-
 </body>
 </html>
