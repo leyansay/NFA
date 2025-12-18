@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NFA Rice Inventory — Sack Library</title>
+
+<!-- CSS Files -->
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/user-component.css">
+<link rel="stylesheet" href="css/sack.css">
+</head>
+<body>
+
+<div class="app">
+    <div id="sidebar"></div>
+</div>
+
+<!-- SACK MODAL -->
+<div id="sackModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeSack">&times;</span>
+    <h2>DATA ENTRY OF SACK LIBRARY</h2>
+    <form id="sackForm">
+      <div class="grid">
+        <div>
+          <label for="sackCode">Sack Code:</label>
+          <input type="text" id="sackCode" name="sackCode" placeholder="Enter Sack Code">
+        </div>
+         <div>
+          <label for="sackCode">Sack Weight:</label>
+        </div>
+        <div>
+          <label for="brandNew">Brand New:</label>
+          <input type="number" id="brandNew" name="brandNew" placeholder="Enter Weight" step="any">
+        </div>
+        <div>
+          <label for="secondHand">Second Hand:</label>
+          <input type="number" id="secondHand" name="secondHand" placeholder="Enter Weight" step="any">
+        </div>
+        <div>
+          <label for="mendable">Mendable:</label>
+          <input type="number" id="mendable" name="mendable" placeholder="Enter Weight" step="any">
+        </div>
+      </div>
+      <button type="submit">Save Sack</button>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <section class="inventory-section">
+    <div class="sticky-header">
+      <div class="header-content">
+        <h2>Sack Library</h2>
+
+        <!-- User Info Component -->
+        <div class="header-actions">
+          <div class="user-info" id="userInfoDropdown">
+            <div class="user-text">
+              <span class="username-display">Hi, User</span>
+              <span class="user-role">Admin</span>
+            </div>
+            <div class="user-avatar">
+              <span class="user-initials">AM</span>
+            </div>
+            <div class="user-dropdown" id="userDropdown">
+              <div class="dropdown-item" id="logoutBtn">Logout</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <div class="sort-container">
+          <label for="sortSelect">Sort by:</label>
+          <select id="sortSelect" class="sort-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+
+        <div class="action-buttons">
+          <button class="add-btn1" id="previewSack">Preview</button>
+          <button class="add-btn2" id="addSack">+ Add Sack</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="activity-table">
+        <thead>
+          <tr>
+            <th>Sack Code</th>
+            <th>Brand New</th>
+            <th>Second Hand</th>
+            <th>Mendable</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="sackBody">
+          <tr>
+            <td colspan="5" style="text-align:center;">Loading sacks...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<!-- Custom Scripts -->
+<script src="jscript/user-auth.js"></script>
+<script src="jscript/sack.js"></script>
+<script src="jscript/sidebar.js"></script>
+
+<!-- Modal Functionality -->
+<script>
+  const sackModal = document.getElementById('sackModal');
+  const addSackBtn = document.getElementById('addSack');
+  const closeSack = document.getElementById('closeSack');
+
+  addSackBtn.onclick = () => sackModal.style.display = 'block';
+  closeSack.onclick = () => sackModal.style.display = 'none';
+  window.onclick = (e) => { if(e.target == sackModal) sackModal.style.display = 'none'; };
+</script>
+
+</body>
+</html>

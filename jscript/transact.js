@@ -185,6 +185,55 @@ document.getElementById("transactionForm").onsubmit = e => {
     // Metadata
     timestamp: Date.now()
   };
+
+  // Clear any previous red borders first
+document.querySelectorAll('input, select').forEach(field => {
+    field.style.border = '';
+});
+
+// Validation: If refWSINo is empty, all other transaction fields are required
+if (!transactionData.refWSINo) {
+    const requiredFieldIds = [
+        'documentNo', 'documentType', 'orNo', 'aiNo', 'recdFromIssdTo',
+        'transactionDate', 'activityCode', 'varietyCode', 'sackCode',
+        'sackCondition', 'sackWeight', 'age', 'pileNo', 'numberOfBags',
+        'grossWeight', 'moistureContent', 'netWeight'
+    ];
+    
+    // Remove existing error messages
+    document.querySelectorAll('.field-error-message').forEach(msg => msg.remove());
+    
+    let hasEmptyFields = false;
+    
+    requiredFieldIds.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (!transactionData[fieldId]) {
+            element.style.border = '2px solid #ff6b6b';
+            hasEmptyFields = true;
+            
+            // Add error message below the field
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'field-error-message';
+            errorMsg.style.cssText = `
+                color: #ff6b6b;
+                font-size: 12px;
+                margin-top: 4px;
+            `;
+            errorMsg.textContent = 'This field is required';
+            element.parentElement.appendChild(errorMsg);
+        }
+    });
+    
+    if (hasEmptyFields) {
+        const firstEmptyField = document.querySelector('[style*="border: 2px solid"]');
+        if (firstEmptyField) {
+            firstEmptyField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstEmptyField.focus();
+        }
+        return;
+    }
+}
+
   
   if (editId) {
     // UPDATE existing transaction

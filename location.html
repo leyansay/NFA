@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NFA Rice Inventory — Location Library</title>
+
+<!-- CSS Files -->
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="css/user-component.css">
+<link rel="stylesheet" href="css/location.css">
+</head>
+<body>
+
+<div class="app">
+    <div id="sidebar"></div>
+</div>
+
+<!-- LOCATION MODAL -->
+<div id="locationModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="closeLocation">&times;</span>
+    <h2>DATA ENTRY OF LOCATION LIBRARY</h2>
+    <form id="locationForm">
+      <!-- Grid layout for inputs -->
+      <div class="grid">
+        <div>
+          <label for="locationCode">Location Code:</label>
+          <input type="text" id="locationCode" name="locationCode" placeholder="Enter Location Code">
+        </div>
+        <div>
+          <label for="provinceName">Province Name:</label>
+          <input type="text" id="provinceName" name="provinceName" placeholder="Enter Province Name">
+        </div>
+        <div>
+          <label for="abbreviation">Abbreviation:</label>
+          <input type="text" id="abbreviation" name="abbreviation" placeholder="Enter Abbreviation">
+        </div>
+      </div>
+      <button type="submit">Save Location</button>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <section class="inventory-section">
+    <div class="sticky-header">
+      <div class="header-content">
+        <h2>Location Library</h2>
+        
+        <!-- User Info Component -->
+        <div class="header-actions">
+          <div class="user-info" id="userInfoDropdown">
+            <div class="user-text">
+              <span class="username-display">Hi, User</span>
+              <span class="user-role">Admin</span>
+            </div>
+            <div class="user-avatar">
+              <span class="user-initials">AM</span>
+            </div>
+            <div class="user-dropdown" id="userDropdown">
+              <div class="dropdown-item" id="logoutBtn">Logout</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <div class="sort-container">
+          <label for="sortSelect">Sort by:</label>
+          <select id="sortSelect" class="sort-select">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+
+        <div class="action-buttons">
+          <button class="add-btn1" id="previewLocation">Preview</button>
+          <button class="add-btn2" id="addLocation">+ Add Location</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="activity-table">
+        <thead>
+          <tr>
+            <th>Location Code</th>
+            <th>Province Name</th>
+            <th>Abbreviation</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="locationBody">
+          <tr>
+            <td colspan="4" style="text-align:center;">Loading locations...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<!-- Custom Scripts -->
+<script src="jscript/user-auth.js"></script>
+<script src="jscript/location.js"></script>
+<script src="jscript/sidebar.js"></script>
+
+<!-- Modal Functionality -->
+<script>
+  const locationModal = document.getElementById('locationModal');
+  const addLocationBtn = document.getElementById('addLocation');
+  const closeLocation = document.getElementById('closeLocation');
+
+  addLocationBtn.onclick = () => locationModal.style.display = 'block';
+  closeLocation.onclick = () => locationModal.style.display = 'none';
+  window.onclick = (e) => { if(e.target == locationModal) locationModal.style.display = 'none'; };
+</script>
+
+</body>
+</html>

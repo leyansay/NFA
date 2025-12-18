@@ -1,0 +1,136 @@
+  <!doctype html>
+  <html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NFA Rice Inventory — Cereal Library</title>
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/user-component.css" />
+  </head>
+  <body>
+
+  <div class="app">
+      <div id="sidebar"></div>
+  </div>
+
+  <!-- CEREAL MODAL -->
+  <div id="cerealModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeCereal">&times;</span>
+      <h2>DATA ENTRY OF CEREAL LIBRARY</h2>
+      <form id="cerealForm">
+        <!-- CEREAL DETAILS -->
+        <div class="grid">
+          <div>
+            <label>Cereal Code:</label>
+            <input type="text" id="cerealCode">
+          </div>
+        </div>
+        <div class="grid">
+          <div>
+            <label>Description:</label>
+            <input type="text" id="description">
+          </div>
+        </div>
+        <div class="grid">
+          <div>
+            <label>Compute TA for:</label>
+            <select id="computeTAFor">
+              <option value="">-- Select Option --</option>
+              <option value="TOTAL WEIGHT LOSS">TOTAL WEIGHT LOSS</option>
+              <option value="MC">MC</option>
+              <option value="SHRINKAGE ESTIMATION PROTOCOL">SHRINKAGE ESTIMATION PROTOCOL</option>
+              <option value="INSECT INFESTATION">INSECT INFESTATION</option>
+              <option value="BIRD INFESTATION">BIRD INFESTATION</option>
+              <option value="RODENT INFESTATION">RODENT INFESTATION</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit">Save Cereal</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <section class="inventory-section">
+      <!-- STICKY HEADER -->
+      <div class="sticky-header">
+        <div class="header-content">
+          <h2>Cereal Library</h2>
+          
+          <!-- User Info Component -->
+          <div class="user-info" id="userInfoDropdown">
+            <div class="user-text">
+              <span class="username-display">Hi, User</span>
+              <span class="user-role">Admin</span>
+            </div>
+            <div class="user-avatar">
+              <span class="user-initials">AM</span>
+            </div>
+            
+            <!-- Dropdown Menu -->
+            <div class="user-dropdown" id="userDropdown">
+              <div class="dropdown-item" id="logoutBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke-width="2" stroke-linecap="round"/>
+                  <polyline points="16 17 21 12 16 7" stroke-width="2" stroke-linecap="round"/>
+                  <line x1="21" y1="12" x2="9" y2="12" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Logout
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls Row -->
+        <div class="controls-row">
+          <div class="sort-container">
+            <label>Sort by:</label>
+            <select id="sortSelect" class="sort-select">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
+
+          <div class="action-buttons">
+            <button class="add-btn1" id="previewCereal">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Preview
+            </button>
+            <button class="add-btn2" id="addCereal">+ Add Cereal</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="activity-table">
+          <thead>
+            <tr>
+              <th>Cereal Code</th>
+              <th>Description</th>
+              <th>Compute TA for</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cerealBody">
+            <tr><td colspan="4" style="text-align:center;">Loading cereals...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+  <script src="jscript/user-auth.js"></script>
+  <script src="jscript/cereal.js"></script>
+  <script src="jscript/sidebar.js"></script>
+
+  </body>
+  </html>
