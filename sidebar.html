@@ -1,4 +1,5 @@
 <aside id="sidebar" class="sidebar" aria-label="sidebar">
+  <!-- Logo -->
   <div class="logo" style="display:flex; align-items:center; gap:10px;">
     <div class="mark">
       <img src="image/nfa.png" alt="NFA Logo" class="circle-img" />
@@ -12,20 +13,20 @@
     </div>
   </div>
 
+  <!-- Menu -->
   <ul class="menu">
     <li id="goHome">🏠 Home</li>
     <li id="goAcc">🧑‍💼 Accountable Officer</li>
     <li id="goTrans">📤 Transaction</li>
     <li id="goInv">🗃️ Inventory</li>
     <li id="goReport">📈 Report</li>
-    
+
     <!-- Library Dropdown -->
     <li class="dropdown-item">
-      <button class="dropdown-toggle" id="libraryDropdown">
-        📚 Library
-        <span class="arrow">▼</span>
+      <button id="libraryDropdown" class="dropdown-toggle">
+        📚 Library <span class="arrow">▼</span>
       </button>
-      <ul class="dropdown-menu" id="libraryMenu">
+      <ul id="libraryMenu" class="dropdown-menu">
         <li data-library="1">Activity</li>
         <li data-library="2">Cereal</li>
         <li data-library="3">Location</li>
@@ -37,6 +38,7 @@
         <li data-library="9">Client</li>
       </ul>
     </li>
+
+
   </ul>
-  
 </aside>
