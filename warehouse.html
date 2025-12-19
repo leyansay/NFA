@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NFA Rice Inventory — Warehouse Library</title>
+
+<!-- CSS Files -->
+<link rel="stylesheet" href="css/sidebar.css">
+<link rel="stylesheet" href="css/activity.css">
+<link rel="stylesheet" href="css/user-component.css">
+<link rel="stylesheet" href="css/warehouse.css">
+</head>
+
+<body>
+
+<div class="app">
+    <div id="sidebar"></div>
+</div>
+
+<!-- ===================== WAREHOUSE MODAL ===================== -->
+<div id="warehouseModal">
+  <div class="modal-content">
+    <span class="close" id="closeWarehouse">&times;</span>
+    <h2>DATA ENTRY OF WAREHOUSE</h2>
+
+    <form id="warehouseForm">
+      <div class="grid">
+        <div>
+          <label for="warehouseCode">Warehouse Code:</label>
+          <input type="text" id="warehouseCode" name="warehouseCode" placeholder="Enter Warehouse Code">
+        </div>
+
+        <div>
+          <label for="warehouseName">Warehouse Name:</label>
+          <input type="text" id="warehouseName" name="warehouseName" placeholder="Enter Warehouse Name">
+        </div>
+
+        <div>
+          <label for="location">Location:</label>
+          <input type="text" id="location" name="location" placeholder="Enter Location">
+        </div>
+      </div>
+
+      <button type="submit">Save Warehouse</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main class="main">
+<section class="inventory-section">
+
+  <div class="sticky-header">
+    <div class="header-content">
+      <h2>Warehouse Library</h2>
+    </div>
+
+    <div class="controls-row">
+      <div class="sort-container">
+        <label for="sortSelect">Sort by:</label>
+        <select id="sortSelect" class="sort-select">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
+      </div>
+
+      <div class="action-buttons">
+        <button class="add-btn1" id="previewWarehouse">Preview</button>
+        <button class="add-btn2" id="addWarehouse">+ Add Warehouse</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="activity-table">
+      <thead>
+        <tr>
+          <th>Warehouse Code</th>
+          <th>Warehouse Name</th>
+          <th>Location</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="warehouseBody">
+        <tr>
+          <td colspan="4" style="text-align:center;">Loading warehouses...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+</main>
+
+<!-- ===================== FIREBASE ===================== -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<!-- Custom Scripts -->
+<script src="jscript/warehouse.js"></script>
+<script src="jscript/sidebar.js"></script>
+
+</body>
+</html>

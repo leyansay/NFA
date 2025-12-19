@@ -1,0 +1,146 @@
+/* ================== WAREHOUSE MODAL ================== */
+#warehouseModal {
+  display: none; 
+  position: fixed; 
+  z-index: 1050; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.5); 
+}
+
+#warehouseModal .modal-content {
+  background-color: #fefefe;
+  margin: 3% auto; 
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+#warehouseModal .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 20px;
+}
+
+#warehouseModal .close:hover {
+  color: #000;
+}
+
+#warehouseForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Stack inputs under each other by default */
+#warehouseForm .grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 input per row */
+  gap: 12px;
+}
+
+#warehouseForm label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #495057;
+}
+
+#warehouseForm input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  font-size: 13px;
+  transition: border-color 0.2s ease;
+}
+
+#warehouseForm input:focus {
+  outline: none;
+  border-color: #0b54b5;
+  box-shadow: 0 0 0 3px rgba(11, 84, 181, 0.1);
+}
+
+#warehouseForm button[type="submit"] {
+  padding: 12px 20px;
+  background-color: #0b54b5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+#warehouseForm button[type="submit"]:hover {
+  background-color: #074a9e;
+}
+
+/* DROPDOWN ACTION STYLING */
+.action-cell {
+  position: relative;
+}
+.dot-menu {
+  cursor: pointer;
+  font-size: 20px;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 100;
+}
+.dropdown-content button {
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+}
+.dropdown-content button:hover {
+  background-color: #f0f0f0;
+}
+
+/* SORT SELECT */
+
+.sort-select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  font-size: 13px;
+}
+
+/* Responsive adjustments */
+@media screen and (min-width: 500px) and (max-width: 768px) {
+  #warehouseForm .grid {
+    grid-template-columns: 1fr 1fr; /* 2 inputs per row */
+  }
+}
+
+@media screen and (max-width: 500px){
+  #warehouseForm .grid {
+    grid-template-columns: 1fr; /* 1 input per row on small screens */
+  }
+
+  #warehouseModal .modal-content {
+    padding: 16px;
+  }
+}
