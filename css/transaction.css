@@ -547,20 +547,44 @@ td.right{
   background-color: rgba(0,0,0,0.5); 
 }
 
+.modal1 {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.5); 
+}
+
 .modal-content {
   background-color: #fefefe;
   margin: 3% auto; 
   padding: 24px;
   border-radius: 12px;
   width: 100%;
-  max-width: 95%;
+  max-width: 60%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content1 {
+  background-color: #fefefe;
+  margin: 3% auto; 
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 50%;
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   max-height: 90vh;
   overflow-y: auto;
 }
 
 .close {
-  color: #aaa;
+  color: #313131;
   float: right;
   font-size: 28px;
   font-weight: bold;

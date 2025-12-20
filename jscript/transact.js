@@ -40,6 +40,141 @@ fetch("sidebar.html")
 const officerModal = document.getElementById("officerModal");
 const transactionModal = document.getElementById("transactionModal");
 
+/* LOAD DROPDOWN OPTIONS FROM FIREBASE */
+function loadDropdownOptions() {
+  // Load Activity Codes from activities node
+  database.ref('activities').once('value')
+    .then((snapshot) => {
+      const select = document.getElementById('activityCode');
+      select.innerHTML = '<option value="">Select</option>';
+      
+      if (snapshot.exists()) {
+        const activities = [];
+        
+        snapshot.forEach((child) => {
+          const data = child.val();
+          if (data.activityCode) {
+            activities.push({
+              code: data.activityCode,
+            });
+          }
+        });
+        
+        // Sort by activity code
+        activities.sort((a, b) => a.code.localeCompare(b.code));
+        
+        // Populate dropdown with code and description
+        activities.forEach(activity => {
+          const option = document.createElement('option');
+          option.value = activity.code;
+          option.textContent = activity.description 
+            ? `${activity.code} - ${activity.description}` 
+            : activity.code;
+          select.appendChild(option);
+        });
+      }
+    })
+    .catch((error) => console.error('Error loading activities:', error));
+
+  // Load Sack Codes from sacks node and store full sack data
+  database.ref('sacks').once('value')
+    .then((snapshot) => {
+      const selectCode = document.getElementById('sackCode');
+      selectCode.innerHTML = '<option value="">Select</option>';
+      
+      if (snapshot.exists()) {
+        const sackCodes = new Set();
+        
+        snapshot.forEach((child) => {
+          const data = child.val();
+          if (data.sackCode) {
+            sackCodes.add(data.sackCode);
+          }
+        });
+        
+        // Sort and populate sack codes
+        Array.from(sackCodes).sort().forEach(code => {
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = code;
+          selectCode.appendChild(option);
+        });
+      }
+    })
+    .catch((error) => console.error('Error loading sack codes:', error));
+
+  // Load Sack Conditions (initially disabled)
+  const selectCondition = document.getElementById('sackCondition');
+  selectCondition.innerHTML = '<option value="">Select</option>';
+  selectCondition.disabled = true; // Disable until sack code is selected
+  
+  const conditions = ['Brand New', 'Second Hand', 'Mendable'];
+  conditions.forEach(condition => {
+    const option = document.createElement('option');
+    option.value = condition;
+    option.textContent = condition;
+    selectCondition.appendChild(option);
+  });
+
+  // Load Locations (for Recd From / Issd To)
+  database.ref('locations').once('value')
+    .then((snapshot) => {
+      const select = document.getElementById('recdFromIssdTo');
+      select.innerHTML = '<option value="">Select</option>';
+      
+      if (snapshot.exists()) {
+        snapshot.forEach((child) => {
+          const data = child.val();
+          const option = document.createElement('option');
+          option.value = data.locationName || data.name || data.location || child.key;
+          option.textContent = data.locationName || data.name || data.location || child.key;
+          select.appendChild(option);
+        });
+      }
+    })
+    .catch((error) => console.error('Error loading locations:', error));
+
+  // Load Variety Codes from varieties node
+  database.ref('varieties').once('value')
+    .then((snapshot) => {
+      const select = document.getElementById('varietyCode');
+      
+      // Check if it's a select element or input
+      if (select.tagName === 'SELECT') {
+        select.innerHTML = '<option value="">Select</option>';
+        
+        if (snapshot.exists()) {
+          const varieties = [];
+          
+          snapshot.forEach((child) => {
+            const data = child.val();
+            if (data.varietyCode) {
+              varieties.push({
+                code: data.varietyCode,
+                // description: data.description || '',
+                // cerealType: data.cerealType || ''
+              });
+            }
+          });
+          
+          // Sort by variety code
+          varieties.sort((a, b) => a.code.localeCompare(b.code));
+          
+          // Populate dropdown
+          varieties.forEach(variety => {
+            const option = document.createElement('option');
+            option.value = variety.code;
+            option.textContent = variety.description 
+              ? `${variety.code} - ${variety.description}` 
+              : variety.code;
+            select.appendChild(option);
+          });
+        }
+      }
+    })
+    .catch((error) => console.error('Error loading variety codes:', error));
+}
+
 /* LOAD OFFICERS FROM FIREBASE */
 function loadOfficersFromFirebase() {
   console.log("Loading officers from Firebase...");
@@ -102,6 +237,7 @@ function loadOfficersFromFirebase() {
 /* STEP 1: OPEN OFFICER TABLE */
 document.getElementById("addTransaction").onclick = () => {
   loadOfficersFromFirebase(); // Load fresh data when modal opens
+  loadDropdownOptions(); // Load dropdown options
   officerModal.style.display = "block";
 };
 
@@ -137,7 +273,81 @@ function attachOfficerSelectListeners() {
       // Close Officer modal and open Transaction modal
       officerModal.style.display = "none";
       transactionModal.style.display = "block";
+      
+      // Setup sack code and condition interaction
+      setupSackInteraction();
     });
+  });
+}
+
+/* SETUP SACK CODE AND CONDITION INTERACTION */
+function setupSackInteraction() {
+  const sackCodeSelect = document.getElementById('sackCode');
+  const sackConditionSelect = document.getElementById('sackCondition');
+  const sackWeightInput = document.getElementById('sackWeight');
+  
+  // Make sack weight readonly
+  sackWeightInput.readOnly = true;
+  
+  // When sack code changes
+  sackCodeSelect.addEventListener('change', function() {
+    if (this.value) {
+      // Enable sack condition dropdown
+      sackConditionSelect.disabled = false;
+      sackConditionSelect.value = ""; // Reset condition
+      sackWeightInput.value = ""; // Reset weight
+    } else {
+      // Disable sack condition dropdown and reset values
+      sackConditionSelect.disabled = true;
+      sackConditionSelect.value = "";
+      sackWeightInput.value = "";
+    }
+  });
+  
+  // When sack condition changes, fetch and fill sack weight
+  sackConditionSelect.addEventListener('change', function() {
+    const selectedCode = sackCodeSelect.value;
+    const selectedCondition = this.value;
+    
+    if (selectedCode && selectedCondition) {
+      // Fetch sack data from Firebase
+      database.ref('sacks').once('value')
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            snapshot.forEach((child) => {
+              const data = child.val();
+              
+              // Find matching sack code
+              if (data.sackCode === selectedCode) {
+                let weight = 0;
+                
+                // Get weight based on condition
+                if (selectedCondition === 'Brand New') {
+                  weight = data.brandNew || 0;
+                } else if (selectedCondition === 'Second Hand') {
+                  weight = data.secondHand || 0;
+                } else if (selectedCondition === 'Mendable') {
+                  weight = data.mendable || 0;
+                }
+                
+                // Fill in the sack weight
+                sackWeightInput.value = weight;
+                
+                // Trigger net weight computation
+                computeNetWeight();
+              }
+            });
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching sack weight:', error);
+          alert('Error loading sack weight: ' + error.message);
+        });
+    } else {
+      // Reset weight if condition is cleared
+      sackWeightInput.value = "";
+      computeNetWeight();
+    }
   });
 }
 
@@ -540,6 +750,9 @@ function deleteTransaction(docId) {
 function editTransaction(docId) {
   const transactionRef = database.ref('transactions/' + docId);
   
+  // Load dropdown options first
+  loadDropdownOptions();
+  
   transactionRef.once('value')
     .then((snapshot) => {
       if (!snapshot.exists()) {
@@ -549,39 +762,52 @@ function editTransaction(docId) {
       
       const data = snapshot.val();
       
-      // Populate the form with existing data
-      document.getElementById("officerId").value = data.officerId || "";
-      document.getElementById("officerName").value = data.officerName || "";
-      document.getElementById("warehouseId").value = data.warehouseId || "";
-      document.getElementById("warehouseName").value = data.warehouseName || "";
-      document.getElementById("periodFrom").value = data.periodFrom || "";
-      document.getElementById("periodTo").value = data.periodTo || "";
-      
-      document.getElementById("documentNo").value = data.documentNo || "";
-      document.getElementById("documentType").value = data.documentType || "";
-      document.getElementById("orNo").value = data.orNo || "";
-      document.getElementById("aiNo").value = data.aiNo || "";
-      document.getElementById("refWSINo").value = data.refWSINo || "";
-      document.getElementById("recdFromIssdTo").value = data.recdFromIssdTo || "";
-      document.getElementById("transactionDate").value = data.transactionDate || "";
-      document.getElementById("activityCode").value = data.activityCode || "";
-      document.getElementById("varietyCode").value = data.varietyCode || "";
-      document.getElementById("sackCode").value = data.sackCode || "";
-      document.getElementById("sackCondition").value = data.sackCondition || "";
-      document.getElementById("sackWeight").value = data.sackWeight || "";
-      document.getElementById("age").value = data.age || "";
-      document.getElementById("pileNo").value = data.pileNo || "";
-      document.getElementById("numberOfBags").value = data.numberOfBags || "";
-      document.getElementById("grossWeight").value = data.grossWeight || "";
-      document.getElementById("moistureContent").value = data.moistureContent || "";
-      document.getElementById("netWeight").value = data.netWeight || "";
-      document.getElementById("cancelled").checked = data.cancelled || false;
-      
-      // Store the docId for updating
-      document.getElementById("transactionForm").setAttribute('data-edit-id', docId);
-      
-      // Open the modal
-      transactionModal.style.display = "block";
+      // Wait a bit for dropdowns to load, then populate
+      setTimeout(() => {
+        // Populate the form with existing data
+        document.getElementById("officerId").value = data.officerId || "";
+        document.getElementById("officerName").value = data.officerName || "";
+        document.getElementById("warehouseId").value = data.warehouseId || "";
+        document.getElementById("warehouseName").value = data.warehouseName || "";
+        document.getElementById("periodFrom").value = data.periodFrom || "";
+        document.getElementById("periodTo").value = data.periodTo || "";
+        
+        document.getElementById("documentNo").value = data.documentNo || "";
+        document.getElementById("documentType").value = data.documentType || "";
+        document.getElementById("orNo").value = data.orNo || "";
+        document.getElementById("aiNo").value = data.aiNo || "";
+        document.getElementById("refWSINo").value = data.refWSINo || "";
+        document.getElementById("recdFromIssdTo").value = data.recdFromIssdTo || "";
+        document.getElementById("transactionDate").value = data.transactionDate || "";
+        document.getElementById("activityCode").value = data.activityCode || "";
+        document.getElementById("varietyCode").value = data.varietyCode || "";
+        document.getElementById("sackCode").value = data.sackCode || "";
+        
+        // Enable sack condition if sack code exists
+        const sackConditionSelect = document.getElementById("sackCondition");
+        if (data.sackCode) {
+          sackConditionSelect.disabled = false;
+        }
+        
+        document.getElementById("sackCondition").value = data.sackCondition || "";
+        document.getElementById("sackWeight").value = data.sackWeight || "";
+        document.getElementById("age").value = data.age || "";
+        document.getElementById("pileNo").value = data.pileNo || "";
+        document.getElementById("numberOfBags").value = data.numberOfBags || "";
+        document.getElementById("grossWeight").value = data.grossWeight || "";
+        document.getElementById("moistureContent").value = data.moistureContent || "";
+        document.getElementById("netWeight").value = data.netWeight || "";
+        document.getElementById("cancelled").checked = data.cancelled || false;
+        
+        // Store the docId for updating
+        document.getElementById("transactionForm").setAttribute('data-edit-id', docId);
+        
+        // Setup sack interaction for edit mode
+        setupSackInteraction();
+        
+        // Open the modal
+        transactionModal.style.display = "block";
+      }, 300);
       
     })
     .catch((error) => {
